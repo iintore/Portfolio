@@ -240,17 +240,18 @@ button {
 
 .hero {
   position: relative;
-  height: 483px;
+  height: 550px;
   overflow: hidden;
   background: #f3f3f3;
+  padding: 32px 0;
 }
 
 .hero-video {
   position: absolute;
-  right: 0;
+  right: -48px;
   top: 0;
   width: 550px;
-  height: 483px;
+  height: 100%;
   object-fit: cover;
   opacity: 0.92;
 }
@@ -263,7 +264,7 @@ button {
 }
 
 .hero-copy {
-  padding-top: 114px;
+  padding-top: 90px;
   width: 600px;
   margin-left: 0;
 }

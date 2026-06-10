@@ -466,7 +466,7 @@ function Hero() {
       <div className="hero-inner">
         <div className="hero-copy">
           <h1>
-            <span className="muted-title">Hey, I'm</span>
+            <span className="muted-title">Hey, I'm </span>
             <ImagePill src={asset("tony-headshot.png")} alt="Tony Lewis MANZI" />
             <span>Tony Lewis</span>
             <br />
@@ -480,7 +480,7 @@ function Hero() {
               <ImagePill src={asset("hero-project-1.png")} alt="project preview" />
             </span>
             <br className="location-break" />
-            <span className="muted-title">Based in</span>
+            <span className="muted-title">Based in </span>
             <ImagePill src={asset("kigali-map.png")} alt="Kigali map" />
             <span>Kigali</span>
           </h1>

@@ -1687,7 +1687,7 @@ textarea:focus {
 
   .hero-inner {
     width: 100%;
-    padding: 0 10px;
+    padding: 0 16px;
   }
 
   .hero-copy {
@@ -1721,24 +1721,11 @@ textarea:focus {
   }
 
   .mobile-project-pill {
-    display: flex;
-    width: 71px;
-    margin: 7px 0 -18px;
-  }
-
-  .mobile-project-pill .image-pill {
-    margin: 0;
-  }
-
-  .location-break {
-    display: none;
+    display: none !important;
   }
 
   .image-pill {
-    width: 71px;
-    height: 48px;
-    margin-left: 5px;
-    margin-right: 5px;
+    display: none !important;
   }
 
   .section {

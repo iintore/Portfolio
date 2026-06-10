@@ -248,7 +248,7 @@ button {
 
 .hero-video {
   position: absolute;
-  right: -48px;
+  right: calc((100% - var(--column)) / 2 - 48px);
   top: 0;
   width: 550px;
   height: 100%;

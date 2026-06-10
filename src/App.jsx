@@ -454,16 +454,16 @@ function HomePage({ caseStudies, navigate, openProject }) {
 function Hero() {
   return (
     <section className="hero" id="hero">
+      <video
+        className="hero-video"
+        src={asset("hero-orb-video.mp4")}
+        data-parallax="30"
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
       <div className="hero-inner">
-        <video
-          className="hero-video"
-          src={asset("hero-orb-video.mp4")}
-          data-parallax="30"
-          autoPlay
-          muted
-          loop
-          playsInline
-        />
         <div className="hero-copy">
           <h1>
             <span className="muted-title">Hey, I'm</span>

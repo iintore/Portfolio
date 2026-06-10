@@ -290,9 +290,7 @@ h2 {
   white-space: nowrap;
 }
 
-.mobile-product-title,
-.mobile-project-pill,
-.mobile-pill-break {
+.mobile-product-title {
   display: none;
 }
 
@@ -1716,17 +1714,6 @@ textarea:focus {
     display: inline;
   }
 
-  .mobile-pill-break {
-    display: block;
-  }
-
-  .mobile-project-pill {
-    display: none !important;
-  }
-
-  .image-pill {
-    display: none !important;
-  }
 
   .section {
     padding-top: 82px;

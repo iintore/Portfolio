@@ -475,14 +475,10 @@ function Hero() {
               <ProjectPills />
             </span>
             <span className="mobile-product-title">Senior UI/UX Designer</span>
-            <br className="mobile-pill-break" />
-            <span className="mobile-project-pill">
-              <ImagePill src={asset("hero-project-1.png")} alt="project preview" />
-            </span>
             <br className="location-break" />
             <span className="muted-title">Based in </span>
-            <ImagePill src={asset("kigali-map.png")} alt="Kigali map" />
             <span>Kigali</span>
+            <ImagePill src={asset("kigali-map.png")} alt="Kigali map" />
           </h1>
           <p>
             Hey <span aria-hidden="true">👋🏾</span>, I'm Tony Lewis MANZI, welcome to my world. I love

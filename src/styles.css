@@ -33,7 +33,7 @@
   font-synthesis: none;
   text-rendering: geometricPrecision;
   -webkit-font-smoothing: antialiased;
-  --column: 550px;
+  --column: min(1140px, calc(100vw - 40px));
   --soft: #f3f3f3;
   --ink: #171717;
   --muted: rgba(0, 0, 0, 0.7);
@@ -247,9 +247,9 @@ button {
 
 .hero-video {
   position: absolute;
-  right: 63px;
+  right: 0;
   top: 0;
-  width: 559px;
+  width: 550px;
   height: 483px;
   object-fit: cover;
   opacity: 0.92;
@@ -264,8 +264,8 @@ button {
 
 .hero-copy {
   padding-top: 114px;
-  width: 650px;
-  margin-left: -51px;
+  width: 600px;
+  margin-left: 0;
 }
 
 h1,
@@ -1985,15 +1985,12 @@ textarea:focus {
   }
 }
 
-/* Custom layouts for Grid Projects and Testimonials Count */
-.projects-section,
-.index-hero {
-  width: min(1140px, calc(100vw - 40px)) !important;
-}
-
 @media (min-width: 960px) {
   .project-stack {
     grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .service-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
   }
 }
 
@@ -2004,10 +2001,6 @@ textarea:focus {
 }
 
 @media (max-width: 760px) {
-  .projects-section,
-  .index-hero {
-    width: var(--column) !important;
-  }
   .project-stack {
     grid-template-columns: 1fr !important;
   }

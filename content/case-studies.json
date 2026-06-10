@@ -1,0 +1,74 @@
+[
+  {
+    "id": "strettchcloudinfra",
+    "slug": "strettchcloudinfra",
+    "title": "Strettch Cloud",
+    "summary": "Landio is where bold ideas come to life, transforming concepts into stunning, functional designs.",
+    "client": "iktaworks.co",
+    "services": "Product Design/Research",
+    "timeline": "Feb 2025",
+    "previewUrl": "https://framer.link/D4dc7gs",
+    "heroImage": "/assets/project-strettch.png",
+    "gallery": [
+      "/assets/strettch-detail-1.png",
+      "/assets/strettch-detail-2.png",
+      "/assets/strettch-detail-3.jpg"
+    ],
+    "objective": "To push creative boundaries, delivering user-friendly and impactful designs that captivate audiences. Our focus is on aesthetics, usability, and innovation.",
+    "closing": "From vision to reality, we forge designs that inspire and redefine the future of digital experiences.",
+    "sections": [
+      {
+        "id": "strettch-introduction",
+        "type": "text",
+        "kicker": "Introduction",
+        "title": "Cloud infrastructure shaped for local teams",
+        "body": "Landio is where bold ideas come to life, transforming concepts into stunning, functional designs."
+      },
+      {
+        "id": "strettch-hero-image",
+        "type": "image",
+        "image": "/assets/project-strettch.png",
+        "caption": "Primary Strettch Cloud product presentation."
+      },
+      {
+        "id": "strettch-problem",
+        "type": "text",
+        "kicker": "Problem treatment",
+        "title": "Making technical cloud decisions feel clear",
+        "body": "To push creative boundaries, delivering user-friendly and impactful designs that captivate audiences. The experience focuses on aesthetics, usability, and innovation while keeping dense infrastructure choices approachable."
+      },
+      {
+        "id": "strettch-dashboard",
+        "type": "image",
+        "image": "/assets/strettch-detail-1.png",
+        "caption": "Dashboard and product management flow."
+      },
+      {
+        "id": "strettch-outcome",
+        "type": "text",
+        "kicker": "Outcome",
+        "title": "A polished path from vision to release",
+        "body": "From vision to reality, we forge designs that inspire and redefine the future of digital experiences."
+      },
+      {
+        "id": "strettch-gallery-2",
+        "type": "image",
+        "image": "/assets/strettch-detail-2.png",
+        "caption": "Supporting product interface detail."
+      },
+      {
+        "id": "strettch-gallery-3",
+        "type": "image",
+        "image": "/assets/strettch-detail-3.jpg",
+        "caption": "Final visual system snapshot."
+      },
+      {
+        "id": "block-1781131646398-92",
+        "type": "image",
+        "image": "/assets/project-strettch.png",
+        "caption": "Add a short image caption here."
+      }
+    ],
+    "featured": true
+  }
+]

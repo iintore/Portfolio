@@ -457,7 +457,9 @@ function Hero() {
       <div className="hero-inner">
         <div className="hero-copy">
           <h1>
-            <span className="muted-title">Hey, I'm </span>
+            <span className="muted-title">Hey, </span>
+            <br className="mobile-only-break" />
+            <span className="muted-title">I'm </span>
             <ImagePill src={asset("tony-headshot.png")} alt="Tony Lewis MANZI" />
             <span>Tony Lewis</span>
             <br />

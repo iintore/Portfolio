@@ -290,7 +290,8 @@ h2 {
   white-space: nowrap;
 }
 
-.mobile-product-title {
+.mobile-product-title,
+.mobile-only-break {
   display: none;
 }
 
@@ -1712,6 +1713,10 @@ textarea:focus {
 
   .mobile-product-title {
     display: inline;
+  }
+
+  .mobile-only-break {
+    display: block;
   }
 
 

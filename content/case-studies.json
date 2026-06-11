@@ -18,17 +18,17 @@
     "closing": "From vision to reality, we forge designs that inspire and redefine the future of digital experiences.",
     "sections": [
       {
+        "id": "strettch-gallery-3",
+        "type": "image",
+        "image": "/assets/block-strettchcloudinfra-6-1781171057344.png",
+        "caption": "Final visual system snapshot."
+      },
+      {
         "id": "strettch-introduction",
         "type": "text",
         "kicker": "Introduction",
         "title": "Cloud infrastructure shaped for product teams",
         "body": "Strettch Cloud is a developer-focused cloud platform built to help organizations deploy and manage AI workloads more efficiently. The platform combines resource provisioning, workload management, monitoring, and cost tracking into a single experience, making cloud operations more accessible and easier to manage."
-      },
-      {
-        "id": "strettch-gallery-3",
-        "type": "image",
-        "image": "/assets/block-strettchcloudinfra-6-1781171057344.png",
-        "caption": "Final visual system snapshot."
       },
       {
         "id": "strettch-hero-image",

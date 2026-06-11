@@ -73,5 +73,64 @@
       }
     ],
     "featured": true
+  },
+  {
+    "id": "case-study-1781171474682",
+    "slug": "case-study-1781171474682",
+    "title": "Sinc Ecosystem",
+    "summary": "A connected digital ecosystem that streamlines event discovery, management, and operations for organizers, teams, and attendees.",
+    "client": "Sinc",
+    "services": "Senior UI/UX Designer",
+    "previewUrl": "https://sinc.events/explore",
+    "heroImage": "/assets/project-case-study-1781171474682-1781172211633.png",
+    "gallery": [
+      "/assets/strettch-detail-1.png"
+    ],
+    "objective": "Describe the case-study objective here.",
+    "closing": "Add the final case-study note here.",
+    "sections": [
+      {
+        "id": "block-1781171474682-529",
+        "type": "text",
+        "kicker": "Story",
+        "title": "Connecting Every Part of the Experience",
+        "body": "As Sinc continued to grow, different user groups needed better ways to interact with the platform. Event organizers required powerful management tools, attendees expected seamless experiences, and internal teams needed efficient operational workflows. We worked to create a unified ecosystem that connected all these experiences while maintaining consistency across products."
+      },
+      {
+        "id": "block-1781172217328-443",
+        "type": "image",
+        "image": "/assets/block-case-study-1781171474682-1-1781172246210.png",
+        "caption": ""
+      },
+      {
+        "id": "block-1781171474682-58",
+        "type": "text",
+        "kicker": "INTRODUCTION",
+        "title": "One Ecosystem, Multiple Experiences",
+        "body": "Sinc is a digital platform designed to support event operations from planning and management to attendee engagement. The ecosystem serves organizers, internal teams, and end-users through a collection of connected products that work together to deliver a seamless experience."
+      },
+      {
+        "id": "block-1781172001247-543",
+        "type": "text",
+        "kicker": "PROBLEM",
+        "title": "Disconnected Workflows",
+        "body": "Different user groups relied on separate tools and processes to manage events, track operations, and engage with attendees. This created inefficiencies, inconsistent experiences, and increased operational complexity."
+      },
+      {
+        "id": "block-1781172133379-894",
+        "type": "text",
+        "kicker": "RESEARCH",
+        "title": "Understanding Every User Group",
+        "body": "We worked with organizers, internal stakeholders, and end-users to understand how they interacted with the platform. The research revealed a need for simpler workflows, clearer navigation, and stronger consistency across products."
+      },
+      {
+        "id": "block-1781172154212-43",
+        "type": "text",
+        "kicker": "SOLUTION",
+        "title": "A Unified Product Ecosystem",
+        "body": "We redesigned key parts of the ecosystem to create a more connected experience across web and mobile platforms. The new approach improved usability, streamlined workflows, and established a stronger design foundation for future growth."
+      }
+    ],
+    "featured": true
   }
 ]

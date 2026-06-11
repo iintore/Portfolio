@@ -150,5 +150,77 @@
       }
     ],
     "featured": true
+  },
+  {
+    "id": "case-study-1781176647940",
+    "slug": "case-study-1781176647940",
+    "title": "InternQuest",
+    "summary": "A mobile platform that helps students discover internships, build networks, and access career opportunities more effectively.",
+    "client": "-",
+    "services": "Designer",
+    "previewUrl": "",
+    "heroImage": "/assets/project-case-study-1781176647940-1781177334994.png",
+    "gallery": [
+      "/assets/strettch-detail-1.png"
+    ],
+    "objective": "Describe the case-study objective here.",
+    "closing": "Add the final case-study note here.",
+    "sections": [
+      {
+        "id": "block-1781176647940-166",
+        "type": "text",
+        "kicker": "Story",
+        "title": "Bridging the Gap Between Talent and Opportunity",
+        "body": "We recognized that many students and recent graduates struggled to find meaningful internship opportunities and build professional connections early in their careers. Existing platforms often focused only on job listings and overlooked the broader journey of career development. We set out to create a platform that would help young professionals discover opportunities, connect with mentors, and confidently prepare for their future careers."
+      },
+      {
+        "id": "block-1781178056991-219",
+        "type": "image",
+        "image": "/assets/block-case-study-1781176647940-7-1781178076387.png",
+        "caption": ""
+      },
+      {
+        "id": "block-1781176647940-857",
+        "type": "text",
+        "kicker": "Introduction",
+        "title": "A Career Companion for Emerging Professionals",
+        "body": "InternQuest is a mobile-first platform designed to support students and recent graduates throughout their professional journey. The platform combines internship discovery, networking, career development, and personalized guidance into a single experience."
+      },
+      {
+        "id": "block-1781177801976-786",
+        "type": "text",
+        "kicker": "Problem",
+        "title": "Limited Access to Career Opportunities",
+        "body": "Many students lacked access to relevant internships, professional networks, and career resources. The process of finding opportunities often felt fragmented, requiring users to navigate multiple platforms without clear guidance or support."
+      },
+      {
+        "id": "block-1781177829926-45",
+        "type": "text",
+        "kicker": "RESEARCH",
+        "title": "Understanding Student Career Challenges",
+        "body": "Our research focused on understanding how students search for internships, prepare for applications, and connect with professionals.\n\nKey Findings\n- Students struggled to discover relevant internship opportunities.\n- Many lacked professional networks and industry connections.\n- Career guidance resources were often difficult to access.\n- Existing platforms focused on listings rather than long-term career growth.\n- Users wanted a centralized platform that supported multiple career needs."
+      },
+      {
+        "id": "block-1781177861692-822",
+        "type": "text",
+        "kicker": "HYPOTHESIS",
+        "title": "Creating More Meaningful Career Journeys",
+        "body": "We believed that combining internship opportunities, professional networking, and personalized career support into one platform would help students make better career decisions and improve their chances of success."
+      },
+      {
+        "id": "block-1781177919725-373",
+        "type": "text",
+        "kicker": "AUDIENCE",
+        "title": "Students and Early-Career Professionals",
+        "body": "The platform was designed primarily for:\n\n- University students seeking internships.\n- Recent graduates entering the job market.\n- Young professionals exploring career opportunities.\n- Mentors and industry professionals supporting emerging talent.\n\n\nPERSONAS\nThe Career Explorer\n\nA student looking for internship opportunities, career guidance, and ways to gain practical experience before graduation.\n\nThe Recent Graduate\n\nA young professional searching for entry-level opportunities while building a professional network and personal brand.\n\nThe Mentor\n\nAn experienced professional interested in sharing knowledge, supporting students, and helping shape future talent."
+      },
+      {
+        "id": "block-1781178017074-656",
+        "type": "image",
+        "image": "/assets/block-case-study-1781176647940-6-1781178037418.png",
+        "caption": ""
+      }
+    ],
+    "featured": true
   }
 ]

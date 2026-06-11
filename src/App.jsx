@@ -479,9 +479,9 @@ function SectionHeader({ eyebrow, title }) {
   );
 }
 
-function PillButton({ href, children, onClick, variant = "dark" }) {
+function PillButton({ href, children, onClick, variant = "dark", ...props }) {
   return (
-    <a className={`pill-button ${variant}`} href={href} onClick={onClick}>
+    <a className={`pill-button ${variant}`} href={href} onClick={onClick} {...props}>
       <span>{children}</span>
       <ArrowUpRight size={19} strokeWidth={1.8} />
     </a>
@@ -542,7 +542,9 @@ function Hero() {
             building beautiful, timeless applications & web products experiences
             for users
           </p>
-          <PillButton href="#contact">Get In Touch</PillButton>
+          <PillButton href="https://calendly.com/tonylewismanzi/meet-tony-lewis" target="_blank" rel="noreferrer">
+            Get In Touch
+          </PillButton>
         </div>
       </div>
     </section>
@@ -673,7 +675,9 @@ function SkillsSection({ experiences = [] }) {
 
       <div className="script-cta">
         <p>Tell Me About Your Next Solution Project</p>
-        <PillButton href="#contact">Get In Touch Today</PillButton>
+        <PillButton href="https://calendly.com/tonylewismanzi/meet-tony-lewis" target="_blank" rel="noreferrer">
+          Get In Touch Today
+        </PillButton>
       </div>
     </section>
   );
@@ -782,7 +786,9 @@ function FaqSection() {
       </div>
       <div className="script-cta faq-cta reveal-on-scroll">
         <p>Still have questions? Feel free to get in touch today!</p>
-        <PillButton href="#contact">Get In Touch Today</PillButton>
+        <PillButton href="https://calendly.com/tonylewismanzi/meet-tony-lewis" target="_blank" rel="noreferrer">
+          Get In Touch Today
+        </PillButton>
       </div>
     </section>
   );
@@ -892,7 +898,9 @@ function ProjectsIndex({ caseStudies, navigate, openProject }) {
           eyebrow="My Projects"
           title="The designs that turn vision into a bold reality"
         />
-        <PillButton href="#contact">Get In Touch Today</PillButton>
+        <PillButton href="https://calendly.com/tonylewismanzi/meet-tony-lewis" target="_blank" rel="noreferrer">
+          Get In Touch Today
+        </PillButton>
         <div className="project-stack index-stack">
           {caseStudies.map((project) => (
             <ProjectCard

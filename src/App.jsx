@@ -162,6 +162,7 @@ export function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
     () => localStorage.getItem("portfolio_auth") === "true"
   );
+  const [isAuthDrawerOpen, setIsAuthDrawerOpen] = useState(false);
 
   useEffect(() => {
     const onPop = () => setPath(getPath());
@@ -203,22 +204,9 @@ export function App() {
     return <LoadingFrame />;
   }
 
-  if (path === "/login") {
-    return (
-      <LoginPage
-        onLoginSuccess={() => {
-          setIsAuthenticated(true);
-          localStorage.setItem("portfolio_auth", "true");
-          navigate("/cms");
-        }}
-        navigate={navigate}
-      />
-    );
-  }
-
   if (path === "/cms") {
     if (!isAuthenticated) {
-      setTimeout(() => navigate("/login"), 0);
+      setTimeout(() => navigate("/"), 0);
       return <LoadingFrame />;
     }
     return (
@@ -237,57 +225,42 @@ export function App() {
     );
   }
 
-  if (path === "/projects") {
-    return (
-      <Shell navigate={navigate}>
-        <ProjectsIndex
-          caseStudies={caseStudies}
-          navigate={navigate}
-          openProject={openProject}
-        />
-        <ProjectDrawer
-          project={drawerProject}
-          caseStudies={caseStudies}
-          onClose={closeProject}
-          openProject={openProject}
-        />
-      </Shell>
-    );
-  }
-
-  if (path.startsWith("/projects/")) {
-    return (
-      <Shell navigate={navigate}>
-        <ProjectsIndex
-          caseStudies={caseStudies}
-          navigate={navigate}
-          openProject={openProject}
-        />
-        <ProjectDrawer
-          project={drawerProject}
-          caseStudies={caseStudies}
-          onClose={closeProject}
-          openProject={openProject}
-        />
-      </Shell>
-    );
-  }
-
   return (
-    <Shell navigate={navigate}>
-      <HomePage
-        caseStudies={caseStudies}
-        experiences={experiences}
-        navigate={navigate}
-        openProject={openProject}
-      />
-      <ProjectDrawer
-        project={drawerProject}
-        caseStudies={caseStudies}
-        onClose={closeProject}
-        openProject={openProject}
-      />
-    </Shell>
+    <>
+      <Shell navigate={navigate} onOpenAuth={() => setIsAuthDrawerOpen(true)}>
+        {path === "/projects" || path.startsWith("/projects/") ? (
+          <ProjectsIndex
+            caseStudies={caseStudies}
+            navigate={navigate}
+            openProject={openProject}
+          />
+        ) : (
+          <HomePage
+            caseStudies={caseStudies}
+            experiences={experiences}
+            navigate={navigate}
+            openProject={openProject}
+          />
+        )}
+        <ProjectDrawer
+          project={drawerProject}
+          caseStudies={caseStudies}
+          onClose={closeProject}
+          openProject={openProject}
+        />
+      </Shell>
+      {isAuthDrawerOpen && (
+        <AuthDrawer
+          onClose={() => setIsAuthDrawerOpen(false)}
+          onLoginSuccess={() => {
+            setIsAuthenticated(true);
+            localStorage.setItem("portfolio_auth", "true");
+            setIsAuthDrawerOpen(false);
+            navigate("/cms");
+          }}
+        />
+      )}
+    </>
   );
 }
 
@@ -300,12 +273,12 @@ function LoadingFrame() {
   );
 }
 
-function Shell({ children, navigate }) {
+function Shell({ children, navigate, onOpenAuth }) {
   usePremiumScrollMotion();
 
   return (
     <>
-      <Header navigate={navigate} />
+      <Header navigate={navigate} onOpenAuth={onOpenAuth} />
       <CustomCursor />
       {children}
     </>
@@ -423,24 +396,11 @@ function CustomCursor() {
   );
 }
 
-function Header({ navigate }) {
-  const goContact = (event) => {
-    event.preventDefault();
-    if (window.location.pathname !== "/") {
-      navigate("/");
-      setTimeout(() => document.querySelector("#contact")?.scrollIntoView(), 70);
-      return;
-    }
-    document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
-    window.history.replaceState({}, "", "#contact");
-  };
-
+function Header({ navigate, onOpenAuth }) {
   return (
     <header className="site-header">
-      <a className="brand-link" href="/login" onClick={(e) => { e.preventDefault(); navigate("/login"); }}>
-        Tony Lewis
-      </a>
-      <a className="open-link" href="/#contact" onClick={goContact}>
+      <div />
+      <a className="open-link" href="#" onClick={(e) => { e.preventDefault(); onOpenAuth(); }}>
         <span className="availability-dot" />
         Designing Tech
       </a>
@@ -1704,10 +1664,22 @@ function CmsTextarea({ label, value, onChange }) {
   );
 }
 
-function LoginPage({ onLoginSuccess, navigate }) {
+function AuthDrawer({ onClose, onLoginSuccess }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    document.body.classList.add("drawer-open");
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.classList.remove("drawer-open");
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [onClose]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -1719,43 +1691,54 @@ function LoginPage({ onLoginSuccess, navigate }) {
   };
 
   return (
-    <main className="login-page-container">
-      <div className="login-card">
-        <h2>CMS Authentication</h2>
-        <p className="login-subtitle">Enter your credentials to access the portfolio manager.</p>
-        
-        {error && <div className="login-error">{error}</div>}
-        
-        <form onSubmit={handleSubmit} className="login-form">
-          <label>
-            Username
-            <input 
-              type="text" 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)} 
-              placeholder="Enter username"
-              required 
-            />
-          </label>
-          <label>
-            Password
-            <input 
-              type="password" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
-              placeholder="Enter password"
-              required 
-            />
-          </label>
-          <button type="submit" className="login-submit">
-            Login
+    <div className="project-drawer-layer" role="dialog" aria-modal="true">
+      <button className="project-drawer-scrim" aria-label="Close login" onClick={onClose} />
+      <aside className="project-drawer" style={{ maxHeight: "480px", height: "max-content", padding: "60px 24px" }}>
+        <div className="drawer-inner" style={{ maxWidth: "420px" }}>
+          <div className="drawer-grip" aria-hidden="true" />
+          <button className="drawer-close" aria-label="Close login" onClick={onClose}>
+            <X size={19} />
           </button>
-        </form>
-        <a href="/" className="login-back-home" onClick={(e) => { e.preventDefault(); navigate("/"); }}>
-          Back to Portfolio
-        </a>
-      </div>
-    </main>
+
+          <div style={{ marginTop: "10px" }}>
+            <h2 style={{ fontSize: "28px", fontFamily: "Times New Roman, serif", fontWeight: 400, textAlign: "center", marginBottom: "8px" }}>
+              CMS Authentication
+            </h2>
+            <p style={{ fontSize: "14px", color: "rgba(23, 23, 23, 0.6)", textAlign: "center", margin: "0 0 28px" }}>
+              Enter your credentials to access the portfolio manager.
+            </p>
+
+            {error && <div className="login-error">{error}</div>}
+
+            <form onSubmit={handleSubmit} className="login-form">
+              <label>
+                Username
+                <input 
+                  type="text" 
+                  value={username} 
+                  onChange={(e) => setUsername(e.target.value)} 
+                  placeholder="Enter username"
+                  required 
+                />
+              </label>
+              <label>
+                Password
+                <input 
+                  type="password" 
+                  value={password} 
+                  onChange={(e) => setPassword(e.target.value)} 
+                  placeholder="Enter password"
+                  required 
+                />
+              </label>
+              <button type="submit" className="login-submit">
+                Login
+              </button>
+            </form>
+          </div>
+        </div>
+      </aside>
+    </div>
   );
 }
 

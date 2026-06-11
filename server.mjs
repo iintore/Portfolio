@@ -8,6 +8,7 @@ const app = express();
 const port = Number(process.env.PORT || 3000);
 const isProd = process.env.NODE_ENV === "production";
 const dataPath = path.join(__dirname, "content", "case-studies.json");
+const experienceDataPath = path.join(__dirname, "content", "experience.json");
 
 app.use(express.json({ limit: "5mb" }));
 
@@ -19,6 +20,16 @@ async function readCaseStudies() {
 async function writeCaseStudies(caseStudies) {
   await fs.mkdir(path.dirname(dataPath), { recursive: true });
   await fs.writeFile(dataPath, `${JSON.stringify(caseStudies, null, 2)}\n`, "utf8");
+}
+
+async function readExperiences() {
+  const raw = await fs.readFile(experienceDataPath, "utf8");
+  return JSON.parse(raw);
+}
+
+async function writeExperiences(experiences) {
+  await fs.mkdir(path.dirname(experienceDataPath), { recursive: true });
+  await fs.writeFile(experienceDataPath, `${JSON.stringify(experiences, null, 2)}\n`, "utf8");
 }
 
 app.get("/api/case-studies", async (_req, res) => {
@@ -38,6 +49,28 @@ app.put("/api/case-studies", async (req, res) => {
   try {
     await writeCaseStudies(req.body);
     res.json({ ok: true, caseStudies: req.body });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/experiences", async (_req, res) => {
+  try {
+    res.json(await readExperiences());
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.put("/api/experiences", async (req, res) => {
+  if (!Array.isArray(req.body)) {
+    res.status(400).json({ error: "Expected an array of experiences." });
+    return;
+  }
+
+  try {
+    await writeExperiences(req.body);
+    res.json({ ok: true, experiences: req.body });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -76,6 +109,8 @@ if (isProd) {
   app.use(vite.middlewares);
 }
 
-app.listen(port, "127.0.0.1", () => {
-  console.log(`Portfolio running at http://127.0.0.1:${port}`);
+const host = process.env.HOST || "0.0.0.0";
+app.listen(port, host, () => {
+  console.log(`Portfolio running at http://${host}:${port}`);
 });
+

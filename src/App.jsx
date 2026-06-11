@@ -25,13 +25,7 @@ const services = [
   { title: "Product Discover", image: asset("service-discovery.jpg") },
 ];
 
-const experience = [
-  ["Sr. Product Designer", "Strettch", "2024 - Current"],
-  ["Product Designer", "Kayko Group", "2023 - 2025"],
-  ["UX/UI Designer", "Freelance", "2022 - 2023"],
-  ["CX & Sales", "DNK (Bralirwa)", "2021 - 2023"],
-  ["Tech Supp Eng.", "MVM Fox Ltd", "2021 - 2022"],
-];
+
 
 const processSteps = [
   {
@@ -136,12 +130,33 @@ function useCaseStudies() {
   return { caseStudies, setCaseStudies, status };
 }
 
+function useExperiences() {
+  const [experiences, setExperiences] = useState([]);
+  const [status, setStatus] = useState("loading");
+
+  useEffect(() => {
+    fetch("/api/experiences")
+      .then((response) => {
+        if (!response.ok) throw new Error("Unable to load experiences");
+        return response.json();
+      })
+      .then((data) => {
+        setExperiences(data);
+        setStatus("ready");
+      })
+      .catch(() => setStatus("error"));
+  }, []);
+
+  return { experiences, setExperiences, status };
+}
+
 function getPath() {
   return window.location.pathname.replace(/\/$/, "") || "/";
 }
 
 export function App() {
   const { caseStudies, setCaseStudies, status } = useCaseStudies();
+  const { experiences, setExperiences, status: expStatus } = useExperiences();
   const [path, setPath] = useState(getPath());
   const [drawerProjectId, setDrawerProjectId] = useState(null);
 
@@ -181,7 +196,7 @@ export function App() {
     }
   };
 
-  if (status === "loading") {
+  if (status === "loading" || expStatus === "loading") {
     return <LoadingFrame />;
   }
 
@@ -190,6 +205,8 @@ export function App() {
       <CmsPage
         caseStudies={caseStudies}
         setCaseStudies={setCaseStudies}
+        experiences={experiences}
+        setExperiences={setExperiences}
         navigate={navigate}
       />
     );
@@ -235,6 +252,7 @@ export function App() {
     <Shell navigate={navigate}>
       <HomePage
         caseStudies={caseStudies}
+        experiences={experiences}
         navigate={navigate}
         openProject={openProject}
       />
@@ -424,7 +442,7 @@ function PillButton({ href, children, onClick, variant = "dark" }) {
   );
 }
 
-function HomePage({ caseStudies, navigate, openProject }) {
+function HomePage({ caseStudies, experiences, navigate, openProject }) {
   const featured = caseStudies.filter((item) => item.featured).slice(0, 12);
 
   return (
@@ -432,7 +450,7 @@ function HomePage({ caseStudies, navigate, openProject }) {
       <Hero />
       <BlurDivider />
       <ProjectsPreview projects={featured} navigate={navigate} openProject={openProject} />
-      <SkillsSection />
+      <SkillsSection experiences={experiences} />
       <ProcessSection />
       <ServicesSection />
       <TestimonialsSection />
@@ -558,7 +576,7 @@ function ProjectCard({ project, openProject, compact = false }) {
   );
 }
 
-function SkillsSection() {
+function SkillsSection({ experiences = [] }) {
   return (
     <section className="section">
       <SectionHeader
@@ -586,11 +604,11 @@ function SkillsSection() {
       </div>
 
       <div className="experience-list">
-        {experience.map(([role, company, date]) => (
-          <div className="experience-row" key={`${role}-${company}`}>
+        {experiences.map(({ role, company, period }, index) => (
+          <div className="experience-row" key={`${role}-${company}-${index}`}>
             <p>{role}</p>
             <p>{company}</p>
-            <p>{date}</p>
+            <p>{period}</p>
           </div>
         ))}
       </div>
@@ -1139,9 +1157,12 @@ async function uploadFile(filename, base64Data) {
   return await response.json();
 }
 
-function CmsPage({ caseStudies, setCaseStudies, navigate }) {
+function CmsPage({ caseStudies, setCaseStudies, experiences = [], setExperiences, navigate }) {
+  const [activeTab, setActiveTab] = useState("projects");
   const [draft, setDraft] = useState(caseStudies);
   const [selectedId, setSelectedId] = useState(caseStudies[0]?.id || "");
+  const [draftExperiences, setDraftExperiences] = useState(experiences);
+  const [selectedExpIndex, setSelectedExpIndex] = useState(0);
   const [saveState, setSaveState] = useState("idle");
 
   useEffect(() => {
@@ -1149,15 +1170,36 @@ function CmsPage({ caseStudies, setCaseStudies, navigate }) {
     setSelectedId((current) => current || caseStudies[0]?.id || "");
   }, [caseStudies]);
 
+  useEffect(() => {
+    setDraftExperiences(experiences);
+    setSelectedExpIndex((current) => (current < experiences.length ? current : 0));
+  }, [experiences]);
+
   const selectedIndex = draft.findIndex((item) => item.id === selectedId);
   const selected = draft[selectedIndex] || draft[0];
   const selectedSections = selected ? getProjectSections(selected) : [];
+
+  const selectedExp = draftExperiences[selectedExpIndex] || draftExperiences[0];
 
   const updateSelected = (field, value) => {
     if (!selected) return;
     setDraft((items) =>
       items.map((item) =>
         item.id === selected.id
+          ? {
+            ...item,
+            [field]: value,
+          }
+          : item,
+      ),
+    );
+  };
+
+  const updateSelectedExperience = (field, value) => {
+    if (!selectedExp) return;
+    setDraftExperiences((items) =>
+      items.map((item, index) =>
+        index === selectedExpIndex
           ? {
             ...item,
             [field]: value,
@@ -1231,6 +1273,16 @@ function CmsPage({ caseStudies, setCaseStudies, navigate }) {
     setSelectedId(id);
   };
 
+  const addExperience = () => {
+    const next = {
+      role: "New Role",
+      company: "New Company",
+      period: "2026 - Current",
+    };
+    setDraftExperiences((items) => [...items, next]);
+    setSelectedExpIndex(draftExperiences.length);
+  };
+
   const duplicate = () => {
     if (!selected) return;
     const id = `${selected.slug}-copy-${Date.now()}`;
@@ -1249,6 +1301,16 @@ function CmsPage({ caseStudies, setCaseStudies, navigate }) {
     setSelectedId(id);
   };
 
+  const duplicateExperience = () => {
+    if (!selectedExp) return;
+    const copy = {
+      ...selectedExp,
+      role: `${selectedExp.role} Copy`,
+    };
+    setDraftExperiences((items) => [...items, copy]);
+    setSelectedExpIndex(draftExperiences.length);
+  };
+
   const remove = () => {
     if (!selected) return;
     const next = draft.filter((item) => item.id !== selected.id);
@@ -1256,19 +1318,37 @@ function CmsPage({ caseStudies, setCaseStudies, navigate }) {
     setSelectedId(next[0]?.id || "");
   };
 
+  const deleteExperience = () => {
+    if (!selectedExp) return;
+    const next = draftExperiences.filter((_, index) => index !== selectedExpIndex);
+    setDraftExperiences(next);
+    setSelectedExpIndex(next.length > 0 ? 0 : 0);
+  };
+
   const save = async () => {
     setSaveState("saving");
-    const response = await fetch("/api/case-studies", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(draft),
-    });
-    if (!response.ok) {
+    try {
+      if (activeTab === "projects") {
+        const response = await fetch("/api/case-studies", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(draft),
+        });
+        if (!response.ok) throw new Error("Could not save case studies");
+        setCaseStudies(draft);
+      } else {
+        const response = await fetch("/api/experiences", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(draftExperiences),
+        });
+        if (!response.ok) throw new Error("Could not save experiences");
+        setExperiences(draftExperiences);
+      }
+      setSaveState("saved");
+    } catch (err) {
       setSaveState("error");
-      return;
     }
-    setCaseStudies(draft);
-    setSaveState("saved");
   };
 
   return (
@@ -1277,37 +1357,93 @@ function CmsPage({ caseStudies, setCaseStudies, navigate }) {
         <button className="cms-back" onClick={() => navigate("/")}>
           Tony Lewis MANZI
         </button>
-        <p>Case Study CMS</p>
-        <div className="cms-list">
-          {draft.map((item) => (
-            <button
-              className={item.id === selected?.id ? "active" : ""}
-              key={item.id}
-              onClick={() => setSelectedId(item.id)}
-            >
-              {item.title}
-            </button>
-          ))}
+
+        <div className="cms-tabs">
+          <button
+            className={activeTab === "projects" ? "active" : ""}
+            onClick={() => {
+              setActiveTab("projects");
+              setSaveState("idle");
+            }}
+          >
+            Projects
+          </button>
+          <button
+            className={activeTab === "experiences" ? "active" : ""}
+            onClick={() => {
+              setActiveTab("experiences");
+              setSaveState("idle");
+            }}
+          >
+            Experiences
+          </button>
         </div>
-        <button className="cms-action" onClick={addCaseStudy}>
-          <Plus size={16} /> Add Case Study
-        </button>
+
+        {activeTab === "projects" ? (
+          <>
+            <p>Case Study CMS</p>
+            <div className="cms-list">
+              {draft.map((item) => (
+                <button
+                  className={item.id === selected?.id ? "active" : ""}
+                  key={item.id}
+                  onClick={() => setSelectedId(item.id)}
+                >
+                  {item.title}
+                </button>
+              ))}
+            </div>
+            <button className="cms-action" onClick={addCaseStudy}>
+              <Plus size={16} /> Add Case Study
+            </button>
+          </>
+        ) : (
+          <>
+            <p>Experiences CMS</p>
+            <div className="cms-list">
+              {draftExperiences.map((item, index) => (
+                <button
+                  className={index === selectedExpIndex ? "active" : ""}
+                  key={index}
+                  onClick={() => setSelectedExpIndex(index)}
+                >
+                  {item.role || "New Role"}
+                </button>
+              ))}
+            </div>
+            <button className="cms-action" onClick={addExperience}>
+              <Plus size={16} /> Add Experience
+            </button>
+          </>
+        )}
       </aside>
 
       <section className="cms-editor">
         <div className="cms-toolbar">
           <div>
             <p>Editing</p>
-            <h1>{selected?.title || "No case study selected"}</h1>
+            {activeTab === "projects" ? (
+              <h1>{selected?.title || "No case study selected"}</h1>
+            ) : (
+              <h1>{selectedExp?.role || "No experience selected"}</h1>
+            )}
           </div>
           <div className="cms-toolbar-actions">
-            <a href="/projects" target="_blank" rel="noreferrer">
-              <ExternalLink size={17} /> Preview
-            </a>
-            <button onClick={duplicate} disabled={!selected}>
+            {activeTab === "projects" && (
+              <a href="/projects" target="_blank" rel="noreferrer">
+                <ExternalLink size={17} /> Preview
+              </a>
+            )}
+            <button
+              onClick={activeTab === "projects" ? duplicate : duplicateExperience}
+              disabled={activeTab === "projects" ? !selected : !selectedExp}
+            >
               <Copy size={17} /> Duplicate
             </button>
-            <button onClick={remove} disabled={!selected}>
+            <button
+              onClick={activeTab === "projects" ? remove : deleteExperience}
+              disabled={activeTab === "projects" ? !selected : !selectedExp}
+            >
               <Trash2 size={17} /> Delete
             </button>
             <button className="primary" onClick={save}>
@@ -1317,163 +1453,188 @@ function CmsPage({ caseStudies, setCaseStudies, navigate }) {
         </div>
 
         {saveState === "saved" && (
-          <p className="cms-status">Saved to content/case-studies.json</p>
+          <p className="cms-status">
+            Saved to {activeTab === "projects" ? "content/case-studies.json" : "content/experience.json"}
+          </p>
         )}
         {saveState === "error" && (
           <p className="cms-status error">Could not save. Make sure the Node server is running.</p>
         )}
 
-        {selected && (
-          <div className="cms-grid">
-            <CmsInput label="Title" value={selected.title} onChange={(v) => updateSelected("title", v)} />
-            <CmsInput label="Slug" value={selected.slug} onChange={(v) => updateSelected("slug", v)} />
-            <CmsInput label="Client" value={selected.client} onChange={(v) => updateSelected("client", v)} />
-            <CmsInput label="Services" value={selected.services} onChange={(v) => updateSelected("services", v)} />
-            <CmsInput label="Timeline" value={selected.timeline} onChange={(v) => updateSelected("timeline", v)} />
-            <CmsInput label="Preview URL" value={selected.previewUrl} onChange={(v) => updateSelected("previewUrl", v)} />
-            <div className="cms-upload-field">
-              <label>Hero Image (UI Screenshot to macOS Thumbnail)</label>
-              <div className="cms-upload-controls">
-                {selected.heroImage && (
-                  <img src={selected.heroImage} alt="Hero thumbnail" className="cms-image-preview" />
-                )}
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={async (event) => {
-                    const file = event.target.files?.[0];
-                    if (!file) return;
-                    try {
-                      const thumbnailBase64 = await generateMacOsThumbnail(file);
-                      const cleanName = `project-${selected.id}-${Date.now()}.png`;
-                      const res = await uploadFile(cleanName, thumbnailBase64);
-                      if (res.ok) {
-                        updateSelected("heroImage", res.url);
+        {activeTab === "projects" ? (
+          selected && (
+            <div className="cms-grid">
+              <CmsInput label="Title" value={selected.title} onChange={(v) => updateSelected("title", v)} />
+              <CmsInput label="Slug" value={selected.slug} onChange={(v) => updateSelected("slug", v)} />
+              <CmsInput label="Client" value={selected.client} onChange={(v) => updateSelected("client", v)} />
+              <CmsInput label="Services" value={selected.services} onChange={(v) => updateSelected("services", v)} />
+              <CmsInput label="Timeline" value={selected.timeline} onChange={(v) => updateSelected("timeline", v)} />
+              <CmsInput label="Preview URL" value={selected.previewUrl} onChange={(v) => updateSelected("previewUrl", v)} />
+              <div className="cms-upload-field">
+                <label>Hero Image (UI Screenshot to macOS Thumbnail)</label>
+                <div className="cms-upload-controls">
+                  {selected.heroImage && (
+                    <img src={selected.heroImage} alt="Hero thumbnail" className="cms-image-preview" />
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={async (event) => {
+                      const file = event.target.files?.[0];
+                      if (!file) return;
+                      try {
+                        const thumbnailBase64 = await generateMacOsThumbnail(file);
+                        const cleanName = `project-${selected.id}-${Date.now()}.png`;
+                        const res = await uploadFile(cleanName, thumbnailBase64);
+                        if (res.ok) {
+                          updateSelected("heroImage", res.url);
+                        }
+                      } catch (err) {
+                        alert("Error generating or uploading thumbnail: " + err.message);
                       }
-                    } catch (err) {
-                      alert("Error generating or uploading thumbnail: " + err.message);
-                    }
-                  }}
+                    }}
+                  />
+                </div>
+              </div>
+              <label className="cms-check">
+                <input
+                  type="checkbox"
+                  checked={selected.featured}
+                  onChange={(event) => updateSelected("featured", event.target.checked)}
                 />
-              </div>
-            </div>
-            <label className="cms-check">
-              <input
-                type="checkbox"
-                checked={selected.featured}
-                onChange={(event) => updateSelected("featured", event.target.checked)}
-              />
-              Show on homepage
-            </label>
-            <CmsTextarea label="Summary" value={selected.summary} onChange={(v) => updateSelected("summary", v)} />
-            <div className="cms-block-builder wide">
-              <div className="cms-block-builder-head">
-                <div>
-                  <p>Project story feed</p>
-                  <h2>Drawer content sections</h2>
+                Show on homepage
+              </label>
+              <CmsTextarea label="Summary" value={selected.summary} onChange={(v) => updateSelected("summary", v)} />
+              
+              <div className="cms-block-builder wide">
+                <div className="cms-block-builder-head">
+                  <div>
+                    <p>Project story feed</p>
+                    <h2>Drawer content sections</h2>
+                  </div>
+                  <div>
+                    <button type="button" onClick={() => addBlock("text")}>
+                      <Type size={16} /> Add Text
+                    </button>
+                    <button type="button" onClick={() => addBlock("image")}>
+                      <ImageIcon size={16} /> Add Image
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <button type="button" onClick={() => addBlock("text")}>
-                    <Type size={16} /> Add Text
-                  </button>
-                  <button type="button" onClick={() => addBlock("image")}>
-                    <ImageIcon size={16} /> Add Image
-                  </button>
-                </div>
-              </div>
-              <div className="cms-block-list">
-                {selectedSections.map((block, index) => (
-                  <article className="cms-block" key={block.id}>
-                    <div className="cms-block-head">
-                      <label>
-                        Block Type
-                        <select
-                          value={block.type}
-                          onChange={(event) => changeBlockType(index, event.target.value)}
-                        >
-                          <option value="text">Text section</option>
-                          <option value="image">Image</option>
-                        </select>
-                      </label>
-                      <div className="cms-block-actions">
-                        <button type="button" onClick={() => moveBlock(index, -1)} disabled={index === 0}>
-                          Move Up
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => moveBlock(index, 1)}
-                          disabled={index === selectedSections.length - 1}
-                        >
-                          Move Down
-                        </button>
-                        <button type="button" onClick={() => removeBlock(index)}>
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                    {block.type === "image" ? (
-                      <div className="cms-block-grid">
-                        <div className="cms-upload-field">
-                          <label>Image (UI Screenshot)</label>
-                          <div className="cms-upload-controls">
-                            {block.image && (
-                              <img src={block.image} alt="Block preview" className="cms-image-preview" />
-                            )}
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={async (event) => {
-                                const file = event.target.files?.[0];
-                                if (!file) return;
-                                try {
-                                  const reader = new FileReader();
-                                  reader.onload = async (e) => {
-                                    const rawBase64 = e.target.result;
-                                    const extension = file.name.split(".").pop() || "png";
-                                    const cleanName = `block-${selected.id}-${index}-${Date.now()}.${extension}`;
-                                    const res = await uploadFile(cleanName, rawBase64);
-                                    if (res.ok) {
-                                      updateBlock(index, "image", res.url);
-                                    }
-                                  };
-                                  reader.readAsDataURL(file);
-                                } catch (err) {
-                                  alert("Error uploading image: " + err.message);
-                                }
-                              }}
-                            />
-                          </div>
+                <div className="cms-block-list">
+                  {selectedSections.map((block, index) => (
+                    <article className="cms-block" key={block.id}>
+                      <div className="cms-block-head">
+                        <label>
+                          Block Type
+                          <select
+                            value={block.type}
+                            onChange={(event) => changeBlockType(index, event.target.value)}
+                          >
+                            <option value="text">Text section</option>
+                            <option value="image">Image</option>
+                          </select>
+                        </label>
+                        <div className="cms-block-actions">
+                          <button type="button" onClick={() => moveBlock(index, -1)} disabled={index === 0}>
+                            Move Up
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => moveBlock(index, 1)}
+                            disabled={index === selectedSections.length - 1}
+                          >
+                            Move Down
+                          </button>
+                          <button type="button" onClick={() => removeBlock(index)}>
+                            Delete
+                          </button>
                         </div>
-                        <CmsInput
-                          label="Caption"
-                          value={block.caption || ""}
-                          onChange={(value) => updateBlock(index, "caption", value)}
-                        />
                       </div>
-                    ) : (
-                      <div className="cms-block-grid">
-                        <CmsInput
-                          label="Kicker"
-                          value={block.kicker || ""}
-                          onChange={(value) => updateBlock(index, "kicker", value)}
-                        />
-                        <CmsInput
-                          label="Title"
-                          value={block.title || ""}
-                          onChange={(value) => updateBlock(index, "title", value)}
-                        />
-                        <CmsTextarea
-                          label="Paragraph"
-                          value={block.body || ""}
-                          onChange={(value) => updateBlock(index, "body", value)}
-                        />
-                      </div>
-                    )}
-                  </article>
-                ))}
+                      {block.type === "image" ? (
+                        <div className="cms-block-grid">
+                          <div className="cms-upload-field">
+                            <label>Image (UI Screenshot)</label>
+                            <div className="cms-upload-controls">
+                              {block.image && (
+                                <img src={block.image} alt="Block preview" className="cms-image-preview" />
+                              )}
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={async (event) => {
+                                  const file = event.target.files?.[0];
+                                  if (!file) return;
+                                  try {
+                                    const reader = new FileReader();
+                                    reader.onload = async (e) => {
+                                      const rawBase64 = e.target.result;
+                                      const extension = file.name.split(".").pop() || "png";
+                                      const cleanName = `block-${selected.id}-${index}-${Date.now()}.${extension}`;
+                                      const res = await uploadFile(cleanName, rawBase64);
+                                      if (res.ok) {
+                                        updateBlock(index, "image", res.url);
+                                      }
+                                    };
+                                    reader.readAsDataURL(file);
+                                  } catch (err) {
+                                    alert("Error uploading image: " + err.message);
+                                  }
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <CmsInput
+                            label="Caption"
+                            value={block.caption || ""}
+                            onChange={(value) => updateBlock(index, "caption", value)}
+                          />
+                        </div>
+                      ) : (
+                        <div className="cms-block-grid">
+                          <CmsInput
+                            label="Kicker"
+                            value={block.kicker || ""}
+                            onChange={(value) => updateBlock(index, "kicker", value)}
+                          />
+                          <CmsInput
+                            label="Title"
+                            value={block.title || ""}
+                            onChange={(value) => updateBlock(index, "title", value)}
+                          />
+                          <CmsTextarea
+                            label="Paragraph"
+                            value={block.body || ""}
+                            onChange={(value) => updateBlock(index, "body", value)}
+                          />
+                        </div>
+                      )}
+                    </article>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          )
+        ) : (
+          selectedExp && (
+            <div className="cms-grid">
+              <CmsInput
+                label="Role / Title"
+                value={selectedExp.role}
+                onChange={(v) => updateSelectedExperience("role", v)}
+              />
+              <CmsInput
+                label="Company"
+                value={selectedExp.company}
+                onChange={(v) => updateSelectedExperience("company", v)}
+              />
+              <CmsInput
+                label="Period / Date"
+                value={selectedExp.period}
+                onChange={(v) => updateSelectedExperience("period", v)}
+              />
+            </div>
+          )
         )}
       </section>
     </main>

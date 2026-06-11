@@ -1434,6 +1434,35 @@ textarea:focus {
   color: #171717;
 }
 
+.cms-tabs {
+  display: flex;
+  background: #f3f3f3;
+  padding: 4px;
+  border-radius: 9px;
+  margin: 20px 0;
+  gap: 4px;
+}
+
+.cms-tabs button {
+  flex: 1;
+  text-align: center !important;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  color: #777;
+  transition: all 0.2s ease;
+}
+
+.cms-tabs button.active {
+  background: #fff;
+  color: #171717;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
 .cms-sidebar {
   position: sticky;
   top: 0;

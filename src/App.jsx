@@ -839,7 +839,7 @@ function ContactSection() {
       <div className="book-call">
         <p>Preffer to Book a call ?</p>
         <a
-          href="https://calendly.com/tonylewismanzi/get-to-meet-with-tony-lewis-manzi"
+          href="https://calendly.com/tonylewismanzi/meet-tony-lewis"
           target="_blank"
           rel="noreferrer"
         >

@@ -3,8 +3,8 @@
     "id": "strettchcloudinfra",
     "slug": "strettchcloudinfra",
     "title": "Strettch Cloud",
-    "summary": "Landio is where bold ideas come to life, transforming concepts into stunning, functional designs.",
-    "client": "iktaworks.co",
+    "summary": "A cloud platform that simplifies AI infrastructure management, enabling teams to launch, monitor, and scale faster.",
+    "client": "Strettch Cloud",
     "services": "Product Design/Research",
     "timeline": "Feb 2025",
     "previewUrl": "https://framer.link/D4dc7gs",
@@ -21,27 +21,29 @@
         "id": "strettch-introduction",
         "type": "text",
         "kicker": "Introduction",
-        "title": "Cloud infrastructure shaped for local teams",
-        "body": "Landio is where bold ideas come to life, transforming concepts into stunning, functional designs."
+        "title": "Cloud infrastructure shaped for product teams",
+        "body": "Strettch Cloud is a developer-focused cloud platform built to help organizations deploy and manage AI workloads more efficiently. The platform combines resource provisioning, workload management, monitoring, and cost tracking into a single experience, making cloud operations more accessible and easier to manage."
       },
       {
         "id": "strettch-hero-image",
-        "type": "image",
-        "image": "/assets/project-strettch.png",
-        "caption": "Primary Strettch Cloud product presentation."
+        "type": "text",
+        "kicker": "Story",
+        "title": "Building cloud infrastructure that feels simple",
+        "body": "We noticed that engineering teams were spending too much time configuring infrastructure before they could start building products. Managing virtual machines, allocating computing resources, and monitoring costs often involved complex workflows and disconnected tools. We set out to create a cloud platform that would simplify these processes and help teams focus on innovation rather than infrastructure management."
       },
       {
         "id": "strettch-problem",
         "type": "text",
         "kicker": "Problem treatment",
-        "title": "Making technical cloud decisions feel clear",
-        "body": "To push creative boundaries, delivering user-friendly and impactful designs that captivate audiences. The experience focuses on aesthetics, usability, and innovation while keeping dense infrastructure choices approachable."
+        "title": "Making technical cloud operations easier to manage",
+        "body": "Many engineering teams faced challenges when setting up and maintaining cloud infrastructure. Provisioning resources often required lengthy configurations, infrastructure costs were difficult to track, and teams lacked visibility into workload performance. These challenges slowed development cycles and increased operational complexity."
       },
       {
         "id": "strettch-dashboard",
-        "type": "image",
-        "image": "/assets/strettch-detail-1.png",
-        "caption": "Dashboard and product management flow."
+        "type": "text",
+        "kicker": "Research",
+        "title": "Understanding how teams deploy and manage infrastructure",
+        "body": "We worked closely with engineers, technical leads, and product teams to understand their daily workflows. Through discussions, workflow reviews, and product feedback sessions, we discovered that users needed faster setup processes, clearer resource visibility, and simpler ways to manage cloud operations without sacrificing flexibility.\n\nKey Insights\n- Infrastructure setup consumed valuable development time.\n- Resource allocation workflows were difficult to understand.\n- Cost monitoring tools lacked transparency.\n- Existing cloud platforms felt overwhelming for many teams.\n- Users preferred guided experiences over technical configuration screens."
       },
       {
         "id": "strettch-outcome",
@@ -52,20 +54,21 @@
       },
       {
         "id": "strettch-gallery-2",
-        "type": "image",
-        "image": "/assets/strettch-detail-2.png",
-        "caption": "Supporting product interface detail."
+        "type": "text",
+        "kicker": "Solution",
+        "title": "A unified cloud management ecosystem",
+        "body": "We designed a cloud platform that brings infrastructure management into a single, streamlined experience. The platform allows teams to provision resources, deploy workloads, monitor performance, and control spending through intuitive workflows and real-time insights.\n\nThe solution focused on simplifying complex cloud operations while maintaining the level of control required by engineering teams"
       },
       {
         "id": "strettch-gallery-3",
         "type": "image",
-        "image": "/assets/strettch-detail-3.jpg",
+        "image": "/assets/block-strettchcloudinfra-6-1781171057344.png",
         "caption": "Final visual system snapshot."
       },
       {
         "id": "block-1781131646398-92",
         "type": "image",
-        "image": "/assets/project-strettch.png",
+        "image": "/assets/block-strettchcloudinfra-7-1781171071118.png",
         "caption": "Add a short image caption here."
       }
     ],

@@ -301,6 +301,7 @@ function LoadingFrame() {
 
 function Shell({ children, navigate, onOpenAuth }) {
   usePremiumScrollMotion();
+  useScrollReveal(children);
 
   return (
     <>
@@ -344,6 +345,38 @@ function usePremiumScrollMotion() {
       window.removeEventListener("resize", schedule);
     };
   }, []);
+}
+
+function useScrollReveal(dependency) {
+  useEffect(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (reduceMotion.matches) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+          }
+        });
+      },
+      {
+        threshold: 0.05,
+        rootMargin: "0px 0px -40px 0px",
+      }
+    );
+
+    const timer = setTimeout(() => {
+      document.querySelectorAll(".reveal-on-scroll").forEach((el) => {
+        observer.observe(el);
+      });
+    }, 150);
+
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, [dependency]);
 }
 
 function CustomCursor() {
@@ -436,7 +469,7 @@ function Header({ navigate, onOpenAuth }) {
 
 function SectionHeader({ eyebrow, title }) {
   return (
-    <div className="section-head">
+    <div className="section-head reveal-on-scroll">
       <p className="eyebrow">
         <span />
         {eyebrow}
@@ -545,11 +578,12 @@ function ProjectsPreview({ projects, navigate, openProject }) {
         title="The designs that turn vision into reality"
       />
       <div className="project-stack">
-        {projects.map((project) => (
+        {projects.map((project, index) => (
           <ProjectCard
             project={project}
             key={project.id}
             openProject={openProject}
+            staggerIndex={index}
           />
         ))}
       </div>
@@ -567,10 +601,11 @@ function ProjectsPreview({ projects, navigate, openProject }) {
   );
 }
 
-function ProjectCard({ project, openProject, compact = false }) {
+function ProjectCard({ project, openProject, compact = false, staggerIndex = 0 }) {
   return (
     <a
-      className={`project-card ${compact ? "compact" : ""}`}
+      className={`project-card ${compact ? "compact" : ""} reveal-on-scroll`}
+      style={{ "--stagger-delay": `${staggerIndex * 80}ms` }}
       data-cursor-label="View work"
       href={`/projects/${project.slug}`}
       onClick={(event) => {
@@ -610,15 +645,25 @@ function SkillsSection({ experiences = [] }) {
           data-parallax="-10"
         />
         <div className="skill-chips">
-          {["UX", "UI", "Product", "Research"].map((skill) => (
-            <span key={skill}>{skill}</span>
+          {["UX", "UI", "Product", "Research"].map((skill, index) => (
+            <span 
+              key={skill} 
+              className="reveal-on-scroll" 
+              style={{ "--stagger-delay": `${index * 80}ms` }}
+            >
+              {skill}
+            </span>
           ))}
         </div>
       </div>
 
       <div className="experience-list">
         {experiences.map(({ role, company, period }, index) => (
-          <div className="experience-row" key={`${role}-${company}-${index}`}>
+          <div 
+            className="experience-row reveal-on-scroll" 
+            style={{ "--stagger-delay": `${index * 80}ms` }}
+            key={`${role}-${company}-${index}`}
+          >
             <p>{role}</p>
             <p>{company}</p>
             <p>{period}</p>
@@ -643,7 +688,11 @@ function ProcessSection() {
       />
       <div className="timeline">
         {processSteps.map((step, index) => (
-          <article className="process-card" key={step.title}>
+          <article 
+            className="process-card reveal-on-scroll" 
+            style={{ "--stagger-delay": `${index * 100}ms` }}
+            key={step.title}
+          >
             <span className="timeline-dot" />
             <p className="step-label">{step.label}</p>
             <h3>{step.title}</h3>
@@ -661,8 +710,12 @@ function ServicesSection() {
     <section className="section">
       <SectionHeader eyebrow="Expertise" title="What I'm good at" />
       <div className="service-grid">
-        {services.map((service) => (
-          <article className="service-card" key={service.title}>
+        {services.map((service, index) => (
+          <article 
+            className="service-card reveal-on-scroll" 
+            style={{ "--stagger-delay": `${index * 100}ms` }}
+            key={service.title}
+          >
             <img src={service.image} alt={service.title} data-parallax="10" />
             <h3>{service.title}</h3>
           </article>
@@ -670,8 +723,14 @@ function ServicesSection() {
       </div>
       <div className="service-tags">
         {["Product Design", "UX Design", "UI Design", "Research", "Communication", "Mobile & Web"].map(
-          (tag) => (
-            <span key={tag}>{tag}</span>
+          (tag, index) => (
+            <span 
+              key={tag} 
+              className="reveal-on-scroll" 
+              style={{ "--stagger-delay": `${index * 60}ms` }}
+            >
+              {tag}
+            </span>
           ),
         )}
       </div>
@@ -689,7 +748,7 @@ function TestimonialsSection() {
           ))}
         </div>
         <p>
-          <span>Served</span> <strong>18,532 +</strong> users worldwide
+          <span>Served</span> <strong>418,532 +</strong> users worldwide
         </p>
       </div>
     </section>
@@ -704,18 +763,24 @@ function FaqSection() {
       <SectionHeader eyebrow="FAQ'S" title="Your concerns, addressed with clarity" />
       <div className="faq-list">
         {faqs.map((faq, index) => (
-          <article className={`faq-item ${open === index ? "is-open" : ""}`} key={faq.question}>
+          <article 
+            className={`faq-item ${open === index ? "is-open" : ""} reveal-on-scroll`} 
+            style={{ "--stagger-delay": `${index * 80}ms` }}
+            key={faq.question}
+          >
             <button onClick={() => setOpen(open === index ? -1 : index)}>
               <span>{faq.question}</span>
               <ChevronDown size={18} />
             </button>
             <div className="faq-answer">
-              <p>{faq.answer}</p>
+              <div className="faq-answer-inner">
+                <p>{faq.answer}</p>
+              </div>
             </div>
           </article>
         ))}
       </div>
-      <div className="script-cta faq-cta">
+      <div className="script-cta faq-cta reveal-on-scroll">
         <p>Still have questions? Feel free to get in touch today!</p>
         <PillButton href="#contact">Get In Touch Today</PillButton>
       </div>
@@ -733,7 +798,7 @@ function ContactSection() {
         title="Reach out and let's bring your vision to life"
       />
       <form
-        className="contact-form"
+        className="contact-form reveal-on-scroll"
         onSubmit={(event) => {
           event.preventDefault();
           setSent(true);

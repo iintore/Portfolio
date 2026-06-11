@@ -8,4 +8,9 @@ When implementing from a selected generated mock, treat that image as the source
 
 ## Design Decisions
 - **Project Cards Layout**: Changed project cards from portrait/squarish to a clean landscape rectangular aspect ratio (`3:2` or `1.5/1` aspect-ratio on `.project-image`). Removed the card's internal padding and double border-shadow framing ("MacOS generator thumbnail" frame style) so that the thumbnail image spans edge-to-edge. Implemented a subtle `img` scale-up zoom hover transition instead of container scaling to keep the edge-to-edge boundary intact.
+- **Scroll Reveal & Staggered Animations**: Added scroll-driven reveals using an `IntersectionObserver` React hook (`useScrollReveal`). Handled progressive enhancement by querying `.reveal-on-scroll` elements and adding `.in-view` when they enter the viewport. Staggered elements like project cards, process cards, experience rows, and services dynamically using the `--stagger-delay` CSS custom property.
+- **Experience List Interaction**: Designed a premium hover state on `.experience-row` that slides text rightward (`padding-left: 28px`) and scales in a vertical accent bar on the left.
+- **FAQ Accordion**: Upgraded the FAQ layout from a static max-height transition to a modern CSS grid fraction transition (`grid-template-rows: 0fr` to `1fr`), resolving content cropping and improving toggle responsiveness.
+- **Parallax Image Bleed**: Changed `.project-image img` to have a vertical bleed height (`calc(100% + 40px)`) and relative positioning (`top: -20px`) to prevent background gaps during dynamic scroll translations.
+
 

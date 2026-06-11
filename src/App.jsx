@@ -846,26 +846,28 @@ function ProjectsIndex({ caseStudies, navigate, openProject }) {
 
 function getProjectSections(project) {
   if (!project) return [];
-  if (Array.isArray(project.sections) && project.sections.length) return project.sections;
+  if (Array.isArray(project.sections)) return project.sections;
 
   return [
     {
       id: `${project.id}-intro`,
       type: "text",
+      kicker: "Introduction",
       title: "Introduction",
-      body: project.summary,
+      body: project.summary || "",
     },
     {
       id: `${project.id}-hero`,
       type: "image",
-      image: project.heroImage,
+      image: project.heroImage || "",
       caption: `${project.title} overview`,
     },
     {
       id: `${project.id}-objective`,
       type: "text",
+      kicker: "Objective",
       title: "Objective",
-      body: project.objective,
+      body: project.objective || "",
     },
     ...(project.gallery || []).map((image, index) => ({
       id: `${project.id}-gallery-${index}`,
@@ -876,8 +878,9 @@ function getProjectSections(project) {
     {
       id: `${project.id}-closing`,
       type: "text",
+      kicker: "Outcome",
       title: "Outcome",
-      body: project.closing,
+      body: project.closing || "",
     },
   ];
 }
@@ -1537,12 +1540,68 @@ function CmsPage({ caseStudies, setCaseStudies, experiences = [], setExperiences
                     <p>Project story feed</p>
                     <h2>Drawer content sections</h2>
                   </div>
-                  <div>
+                  <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                     <button type="button" onClick={() => addBlock("text")}>
                       <Type size={16} /> Add Text
                     </button>
                     <button type="button" onClick={() => addBlock("image")}>
                       <ImageIcon size={16} /> Add Image
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (confirm("Are you sure you want to clear all blocks?")) {
+                          updateSelectedSections([]);
+                        }
+                      }}
+                      style={{ color: "#dc2626", borderColor: "rgba(220, 38, 38, 0.2)" }}
+                    >
+                      Clear All
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (confirm("Reset sections to default template? This will replace all current blocks.")) {
+                          const template = [
+                            {
+                              id: `${selected.id}-intro`,
+                              type: "text",
+                              kicker: "Introduction",
+                              title: "Introduction",
+                              body: selected.summary || "",
+                            },
+                            {
+                              id: `${selected.id}-hero`,
+                              type: "image",
+                              image: selected.heroImage || "",
+                              caption: `${selected.title} overview`,
+                            },
+                            {
+                              id: `${selected.id}-objective`,
+                              type: "text",
+                              kicker: "Objective",
+                              title: "Objective",
+                              body: selected.objective || "",
+                            },
+                            ...(selected.gallery || []).map((image, index) => ({
+                              id: `${selected.id}-gallery-${index}`,
+                              type: "image",
+                              image,
+                              caption: `${selected.title} case study image ${index + 1}`,
+                            })),
+                            {
+                              id: `${selected.id}-closing`,
+                              type: "text",
+                              kicker: "Outcome",
+                              title: "Outcome",
+                              body: selected.closing || "",
+                            },
+                          ];
+                          updateSelectedSections(template);
+                        }
+                      }}
+                    >
+                      Reset to Template
                     </button>
                   </div>
                 </div>
@@ -1636,6 +1695,14 @@ function CmsPage({ caseStudies, setCaseStudies, experiences = [], setExperiences
                       )}
                     </article>
                   ))}
+                </div>
+                <div className="cms-block-builder-bottom-actions">
+                  <button type="button" onClick={() => addBlock("text")}>
+                    <Type size={16} /> Add Text
+                  </button>
+                  <button type="button" onClick={() => addBlock("image")}>
+                    <ImageIcon size={16} /> Add Image
+                  </button>
                 </div>
               </div>
             </div>

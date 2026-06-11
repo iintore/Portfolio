@@ -225,9 +225,9 @@ export function App() {
     );
   }
 
-  const isValidRoute = 
-    path === "/" || 
-    path === "/projects" || 
+  const isValidRoute =
+    path === "/" ||
+    path === "/projects" ||
     path.startsWith("/projects/");
 
   if (!isValidRoute) {
@@ -945,16 +945,12 @@ function ProjectDrawer({ project, caseStudies, onClose, openProject }) {
             </div>
             <div className="case-meta">
               <div>
-                <span>Client</span>
+                <span>Company</span>
                 <p>{project.client}</p>
               </div>
               <div>
-                <span>Services</span>
+                <span>Role</span>
                 <p>{project.services}</p>
-              </div>
-              <div>
-                <span>Timeline</span>
-                <p>{project.timeline}</p>
               </div>
             </div>
           </section>
@@ -1268,9 +1264,8 @@ function CmsPage({ caseStudies, setCaseStudies, experiences = [], setExperiences
       slug: id,
       title: "New Case Study",
       summary: "Add the project summary here.",
-      client: "Client name",
-      services: "Product design",
-      timeline: "4 weeks",
+      client: "Company name",
+      services: "Senior UI/UX Designer",
       previewUrl: "https://example.com",
       heroImage: "/assets/project-strettch.png",
       gallery: ["/assets/strettch-detail-1.png"],
@@ -1371,13 +1366,13 @@ function CmsPage({ caseStudies, setCaseStudies, experiences = [], setExperiences
           <button className="cms-back" onClick={() => navigate("/")}>
             Tony Lewis MANZI
           </button>
-          <button 
-            onClick={onLogout} 
-            style={{ 
-              background: "transparent", 
-              border: "none", 
-              color: "rgba(23, 23, 23, 0.4)", 
-              fontSize: "13px", 
+          <button
+            onClick={onLogout}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "rgba(23, 23, 23, 0.4)",
+              fontSize: "13px",
               fontWeight: "500",
               cursor: "pointer",
               padding: "4px 8px"
@@ -1497,9 +1492,8 @@ function CmsPage({ caseStudies, setCaseStudies, experiences = [], setExperiences
             <div className="cms-grid">
               <CmsInput label="Title" value={selected.title} onChange={(v) => updateSelected("title", v)} />
               <CmsInput label="Slug" value={selected.slug} onChange={(v) => updateSelected("slug", v)} />
-              <CmsInput label="Client" value={selected.client} onChange={(v) => updateSelected("client", v)} />
-              <CmsInput label="Services" value={selected.services} onChange={(v) => updateSelected("services", v)} />
-              <CmsInput label="Timeline" value={selected.timeline} onChange={(v) => updateSelected("timeline", v)} />
+              <CmsInput label="Company" value={selected.client} onChange={(v) => updateSelected("client", v)} />
+              <CmsInput label="Role" value={selected.services} onChange={(v) => updateSelected("services", v)} />
               <CmsInput label="Preview URL" value={selected.previewUrl} onChange={(v) => updateSelected("previewUrl", v)} />
               <div className="cms-upload-field">
                 <label>Hero Image (UI Screenshot to macOS Thumbnail)</label>
@@ -1536,7 +1530,7 @@ function CmsPage({ caseStudies, setCaseStudies, experiences = [], setExperiences
                 Show on homepage
               </label>
               <CmsTextarea label="Summary" value={selected.summary} onChange={(v) => updateSelected("summary", v)} />
-              
+
               <div className="cms-block-builder wide">
                 <div className="cms-block-builder-head">
                   <div>
@@ -1739,22 +1733,22 @@ function AuthDrawer({ onClose, onLoginSuccess }) {
             <form onSubmit={handleSubmit} className="login-form">
               <label>
                 Username
-                <input 
-                  type="text" 
-                  value={username} 
-                  onChange={(e) => setUsername(e.target.value)} 
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   placeholder="Enter username"
-                  required 
+                  required
                 />
               </label>
               <label>
                 Password
-                <input 
-                  type="password" 
-                  value={password} 
-                  onChange={(e) => setPassword(e.target.value)} 
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
-                  required 
+                  required
                 />
               </label>
               <button type="submit" className="login-submit">
@@ -1773,9 +1767,9 @@ function NotFoundPage({ navigate }) {
     <main className="not-found-container">
       <div className="not-found-content">
         <h1>404</h1>
-        <h2>Page Not Found</h2>
+        <h2>I don't think i have that</h2>
         <p>
-          The page you are looking for doesn't exist or has been moved.
+          Glad you're having fun from my portfolio, but I don't have that page. feel free to check out my projects or contact me if you're interested in working together.
         </p>
         <PillButton href="/" onClick={(e) => { e.preventDefault(); navigate("/"); }}>
           Back to Home

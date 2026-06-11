@@ -30,23 +30,23 @@ const services = [
 const processSteps = [
   {
     label: "step1",
-    title: "Let's Get In Touch",
-    body: "Start by reaching out through our contact page. Fill out the form or book a call to discuss your project, goals, and ideas in even greater detail.",
+    title: "Getting Close to the Problem",
+    body: "Before designing anything, we spent time understanding what people were struggling with, what the business needed, and where opportunities existed.",
   },
   {
     label: "step2",
-    title: "Grab Your Designs",
-    body: "Tell me your unique vision, and I'll create stunning, functional designs that perfectly align with your goals and bring your ideas to life seamlessly.",
+    title: "Finding What Matters Most",
+    body: "Not every problem deserves a solution. We identified the biggest pain points, aligned on priorities, and focused on what would create the most value.",
   },
   {
     label: "step3",
-    title: "Kickstart Development",
-    body: "I expertly transform your designs into a powerful, scalable solution, fully ready to launch and optimized for performance, usability, and growth.",
+    title: "Turning Ideas Into Experiences",
+    body: "I explored concepts, mapped journeys, tested flows, and refined the experience until it felt simple, intuitive, and ready for real users.",
   },
   {
     label: "step4",
-    title: "And Hand Over",
-    body: "Receive a fully tested, polished, high-quality product tailored to your needs with support for seamless performance and long-term success.",
+    title: "And Bringing It Into the Real World",
+    body: "Design doesn't stop in Figma. We worked closely with developers, launched the product, gathered feedback, and continued improving the experience.",
   },
 ];
 

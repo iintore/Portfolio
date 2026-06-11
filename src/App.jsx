@@ -159,6 +159,9 @@ export function App() {
   const { experiences, setExperiences, status: expStatus } = useExperiences();
   const [path, setPath] = useState(getPath());
   const [drawerProjectId, setDrawerProjectId] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    () => localStorage.getItem("portfolio_auth") === "true"
+  );
 
   useEffect(() => {
     const onPop = () => setPath(getPath());
@@ -200,7 +203,24 @@ export function App() {
     return <LoadingFrame />;
   }
 
+  if (path === "/login") {
+    return (
+      <LoginPage
+        onLoginSuccess={() => {
+          setIsAuthenticated(true);
+          localStorage.setItem("portfolio_auth", "true");
+          navigate("/cms");
+        }}
+        navigate={navigate}
+      />
+    );
+  }
+
   if (path === "/cms") {
+    if (!isAuthenticated) {
+      setTimeout(() => navigate("/login"), 0);
+      return <LoadingFrame />;
+    }
     return (
       <CmsPage
         caseStudies={caseStudies}
@@ -208,6 +228,11 @@ export function App() {
         experiences={experiences}
         setExperiences={setExperiences}
         navigate={navigate}
+        onLogout={() => {
+          setIsAuthenticated(false);
+          localStorage.removeItem("portfolio_auth");
+          navigate("/");
+        }}
       />
     );
   }
@@ -412,7 +437,9 @@ function Header({ navigate }) {
 
   return (
     <header className="site-header">
-      <div />
+      <a className="brand-link" href="/login" onClick={(e) => { e.preventDefault(); navigate("/login"); }}>
+        Tony Lewis
+      </a>
       <a className="open-link" href="/#contact" onClick={goContact}>
         <span className="availability-dot" />
         Designing Tech
@@ -1157,7 +1184,7 @@ async function uploadFile(filename, base64Data) {
   return await response.json();
 }
 
-function CmsPage({ caseStudies, setCaseStudies, experiences = [], setExperiences, navigate }) {
+function CmsPage({ caseStudies, setCaseStudies, experiences = [], setExperiences, navigate, onLogout }) {
   const [activeTab, setActiveTab] = useState("projects");
   const [draft, setDraft] = useState(caseStudies);
   const [selectedId, setSelectedId] = useState(caseStudies[0]?.id || "");
@@ -1354,9 +1381,27 @@ function CmsPage({ caseStudies, setCaseStudies, experiences = [], setExperiences
   return (
     <main className="cms-shell">
       <aside className="cms-sidebar">
-        <button className="cms-back" onClick={() => navigate("/")}>
-          Tony Lewis MANZI
-        </button>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", paddingRight: "10px", marginBottom: "34px" }}>
+          <button className="cms-back" onClick={() => navigate("/")}>
+            Tony Lewis MANZI
+          </button>
+          <button 
+            onClick={onLogout} 
+            style={{ 
+              background: "transparent", 
+              border: "none", 
+              color: "rgba(23, 23, 23, 0.4)", 
+              fontSize: "13px", 
+              fontWeight: "500",
+              cursor: "pointer",
+              padding: "4px 8px"
+            }}
+            onMouseOver={(e) => e.target.style.color = "#dc2626"}
+            onMouseOut={(e) => e.target.style.color = "rgba(23, 23, 23, 0.4)"}
+          >
+            Logout
+          </button>
+        </div>
 
         <div className="cms-tabs">
           <button
@@ -1658,3 +1703,59 @@ function CmsTextarea({ label, value, onChange }) {
     </label>
   );
 }
+
+function LoginPage({ onLoginSuccess, navigate }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (username === "iintore" && password === "Manzit@2002") {
+      onLoginSuccess();
+    } else {
+      setError("Invalid username or password");
+    }
+  };
+
+  return (
+    <main className="login-page-container">
+      <div className="login-card">
+        <h2>CMS Authentication</h2>
+        <p className="login-subtitle">Enter your credentials to access the portfolio manager.</p>
+        
+        {error && <div className="login-error">{error}</div>}
+        
+        <form onSubmit={handleSubmit} className="login-form">
+          <label>
+            Username
+            <input 
+              type="text" 
+              value={username} 
+              onChange={(e) => setUsername(e.target.value)} 
+              placeholder="Enter username"
+              required 
+            />
+          </label>
+          <label>
+            Password
+            <input 
+              type="password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              placeholder="Enter password"
+              required 
+            />
+          </label>
+          <button type="submit" className="login-submit">
+            Login
+          </button>
+        </form>
+        <a href="/" className="login-back-home" onClick={(e) => { e.preventDefault(); navigate("/"); }}>
+          Back to Portfolio
+        </a>
+      </div>
+    </main>
+  );
+}
+

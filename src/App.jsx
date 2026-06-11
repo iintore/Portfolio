@@ -394,19 +394,10 @@ function Header({ navigate }) {
 
   return (
     <header className="site-header">
-      <a
-        className="brand-link"
-        href="/#hero"
-        onClick={(event) => {
-          event.preventDefault();
-          navigate("/");
-        }}
-      >
-        Tony Lewis MANZI
-      </a>
+      <div />
       <a className="open-link" href="/#contact" onClick={goContact}>
         <span className="availability-dot" />
-        Open
+        Designing Tech
       </a>
     </header>
   );
@@ -982,7 +973,7 @@ function getDominantColors(img) {
   const ctx = canvas.getContext("2d");
   ctx.drawImage(img, 0, 0, 2, 2);
   const data = ctx.getImageData(0, 0, 2, 2).data;
-  
+
   const colors = [];
   for (let i = 0; i < 4; i++) {
     const r = data[i * 4];
@@ -1001,7 +992,7 @@ async function generateMacOsThumbnail(file) {
       img.onload = () => {
         try {
           const colors = getDominantColors(img);
-          
+
           const canvas = document.createElement("canvas");
           canvas.width = 1200;
           canvas.height = 800;
@@ -1037,7 +1028,7 @@ async function generateMacOsThumbnail(file) {
           // 2. Draw mock macOS Window
           const drawWidth = 900;
           const drawHeight = Math.min(560, 900 * (img.height / img.width));
-          
+
           const wx = (1200 - drawWidth) / 2;
           const wy = (800 - drawHeight) / 2;
           const radius = 16;
@@ -1060,11 +1051,11 @@ async function generateMacOsThumbnail(file) {
           ctx.lineTo(wx, wy + radius);
           ctx.quadraticCurveTo(wx, wy, wx + radius, wy);
           ctx.closePath();
-          
+
           ctx.fillStyle = "#ffffff";
           ctx.fill();
           ctx.clip();
-          
+
           ctx.shadowColor = "transparent";
           ctx.shadowBlur = 0;
           ctx.shadowOffsetY = 0;

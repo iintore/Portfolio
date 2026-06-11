@@ -32,6 +32,12 @@
         "body": "We noticed that engineering teams were spending too much time configuring infrastructure before they could start building products. Managing virtual machines, allocating computing resources, and monitoring costs often involved complex workflows and disconnected tools. We set out to create a cloud platform that would simplify these processes and help teams focus on innovation rather than infrastructure management."
       },
       {
+        "id": "strettch-gallery-3",
+        "type": "image",
+        "image": "/assets/block-strettchcloudinfra-6-1781171057344.png",
+        "caption": "Final visual system snapshot."
+      },
+      {
         "id": "strettch-problem",
         "type": "text",
         "kicker": "Problem treatment",
@@ -58,12 +64,6 @@
         "kicker": "Solution",
         "title": "A unified cloud management ecosystem",
         "body": "We designed a cloud platform that brings infrastructure management into a single, streamlined experience. The platform allows teams to provision resources, deploy workloads, monitor performance, and control spending through intuitive workflows and real-time insights.\n\nThe solution focused on simplifying complex cloud operations while maintaining the level of control required by engineering teams"
-      },
-      {
-        "id": "strettch-gallery-3",
-        "type": "image",
-        "image": "/assets/block-strettchcloudinfra-6-1781171057344.png",
-        "caption": "Final visual system snapshot."
       },
       {
         "id": "block-1781131646398-92",

@@ -31,10 +31,10 @@
         "body": "Strettch Cloud is a developer-focused cloud platform built to help organizations deploy and manage AI workloads more efficiently. The platform combines resource provisioning, workload management, monitoring, and cost tracking into a single experience, making cloud operations more accessible and easier to manage."
       },
       {
-        "id": "block-1781190715114-284",
+        "id": "block-1781191383704-700",
         "type": "image",
-        "image": "/assets/block-strettchcloudinfra-8-1781190739071.png",
-        "caption": ""
+        "image": "/assets/block-strettchcloudinfra-9-1781191391832.gif",
+        "caption": "Add a short image caption here."
       },
       {
         "id": "strettch-hero-image",
@@ -42,6 +42,12 @@
         "kicker": "Story",
         "title": "Building cloud infrastructure that feels simple",
         "body": "We noticed that engineering teams were spending too much time configuring infrastructure before they could start building products. Managing virtual machines, allocating computing resources, and monitoring costs often involved complex workflows and disconnected tools. We set out to create a cloud platform that would simplify these processes and help teams focus on innovation rather than infrastructure management."
+      },
+      {
+        "id": "block-1781190715114-284",
+        "type": "image",
+        "image": "/assets/block-strettchcloudinfra-8-1781190739071.png",
+        "caption": ""
       },
       {
         "id": "strettch-problem",

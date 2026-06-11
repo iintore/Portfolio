@@ -225,6 +225,32 @@ export function App() {
     );
   }
 
+  const isValidRoute = 
+    path === "/" || 
+    path === "/projects" || 
+    path.startsWith("/projects/");
+
+  if (!isValidRoute) {
+    return (
+      <>
+        <Shell navigate={navigate} onOpenAuth={() => setIsAuthDrawerOpen(true)}>
+          <NotFoundPage navigate={navigate} />
+        </Shell>
+        {isAuthDrawerOpen && (
+          <AuthDrawer
+            onClose={() => setIsAuthDrawerOpen(false)}
+            onLoginSuccess={() => {
+              setIsAuthenticated(true);
+              localStorage.setItem("portfolio_auth", "true");
+              setIsAuthDrawerOpen(false);
+              navigate("/cms");
+            }}
+          />
+        )}
+      </>
+    );
+  }
+
   return (
     <>
       <Shell navigate={navigate} onOpenAuth={() => setIsAuthDrawerOpen(true)}>
@@ -1741,4 +1767,22 @@ function AuthDrawer({ onClose, onLoginSuccess }) {
     </div>
   );
 }
+
+function NotFoundPage({ navigate }) {
+  return (
+    <main className="not-found-container">
+      <div className="not-found-content">
+        <h1>404</h1>
+        <h2>Page Not Found</h2>
+        <p>
+          The page you are looking for doesn't exist or has been moved.
+        </p>
+        <PillButton href="/" onClick={(e) => { e.preventDefault(); navigate("/"); }}>
+          Back to Home
+        </PillButton>
+      </div>
+    </main>
+  );
+}
+
 

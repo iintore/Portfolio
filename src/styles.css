@@ -2186,3 +2186,48 @@ textarea:focus {
   color: #171717;
 }
 
+/* 404 Page Styles */
+.not-found-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f3f3;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.not-found-content {
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.not-found-content h1 {
+  font-size: 130px;
+  line-height: 1;
+  font-family: "Times New Roman", Times, serif;
+  color: #171717;
+  margin: 0;
+  letter-spacing: -2px;
+}
+
+.not-found-content h2 {
+  font-size: 26px;
+  line-height: 32px;
+  font-weight: 500;
+  color: #171717;
+  margin: 0;
+}
+
+.not-found-content p {
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(23, 23, 23, 0.6);
+  margin: 8px 0 24px;
+  width: 100%;
+}
+
+

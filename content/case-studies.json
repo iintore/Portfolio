@@ -222,5 +222,62 @@
       }
     ],
     "featured": true
+  },
+  {
+    "id": "case-study-1781178529089",
+    "slug": "case-study-1781178529089",
+    "title": "MediHealth",
+    "summary": "A telemedicine concept designed to help Rwandan patients access medical care remotely through low-bandwidth consultations and guided symptom reporting.",
+    "client": "-",
+    "services": "UX Design",
+    "previewUrl": "",
+    "heroImage": "/assets/project-case-study-1781178529089-1781180180034.png",
+    "gallery": [
+      "/assets/strettch-detail-1.png"
+    ],
+    "objective": "Describe the case-study objective here.",
+    "closing": "Add the final case-study note here.",
+    "sections": [
+      {
+        "id": "block-1781178529089-452",
+        "type": "text",
+        "kicker": "Story",
+        "title": "Expanding Access to Healthcare",
+        "body": "We explored how telemedicine could improve access to healthcare in Rwanda, particularly for people living in areas with limited access to specialists. The challenge was to create an experience that worked across varying levels of connectivity, digital literacy, and device capabilities while maintaining trust between patients and healthcare providers."
+      },
+      {
+        "id": "block-1781180217497-719",
+        "type": "image",
+        "image": "/assets/block-case-study-1781178529089-1-1781180231483.png",
+        "caption": ""
+      },
+      {
+        "id": "block-1781178529089-845",
+        "type": "text",
+        "kicker": "INTRODUCTION",
+        "title": "Healthcare Beyond Physical Clinics",
+        "body": "MediHealth is a telemedicine platform concept designed to connect patients and clinicians through remote consultations. The platform focuses on making healthcare more accessible by enabling patients to report symptoms, communicate with clinicians, and receive guidance without needing to travel long distances."
+      },
+      {
+        "id": "block-1781180286653-554",
+        "type": "text",
+        "kicker": "PROBLEM",
+        "title": "Distance Creates Delays",
+        "body": "Many patients face barriers when seeking medical care, including long travel times, limited specialist availability, and overcrowded health facilities. These challenges can delay diagnosis and treatment, especially for people living outside major urban centers."
+      },
+      {
+        "id": "block-1781180303669-744",
+        "type": "image",
+        "image": "/assets/block-case-study-1781178529089-4-1781180315660.png",
+        "caption": "Add a short image caption here."
+      },
+      {
+        "id": "block-1781180322348-240",
+        "type": "image",
+        "image": "/assets/block-case-study-1781178529089-5-1781180331126.png",
+        "caption": "Add a short image caption here."
+      }
+    ],
+    "featured": true
   }
 ]

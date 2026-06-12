@@ -163,6 +163,7 @@ export function App() {
     () => localStorage.getItem("portfolio_auth") === "true"
   );
   const [isAuthDrawerOpen, setIsAuthDrawerOpen] = useState(false);
+  const [isPreloaderFinished, setIsPreloaderFinished] = useState(false);
 
   useEffect(() => {
     const onPop = () => setPath(getPath());
@@ -200,14 +201,21 @@ export function App() {
     }
   };
 
-  if (status === "loading" || expStatus === "loading") {
-    return <LoadingFrame />;
+  const isDataReady = status !== "loading" && expStatus !== "loading";
+
+  if (!isPreloaderFinished) {
+    return (
+      <LoadingFrame
+        isDataReady={isDataReady}
+        onComplete={() => setIsPreloaderFinished(true)}
+      />
+    );
   }
 
   if (path === "/cms") {
     if (!isAuthenticated) {
       setTimeout(() => navigate("/"), 0);
-      return <LoadingFrame />;
+      return <LoadingFrame isDataReady={false} />;
     }
     return (
       <CmsPage
@@ -290,11 +298,80 @@ export function App() {
   );
 }
 
-function LoadingFrame() {
+function LoadingFrame({ isDataReady = true, onComplete = () => { } }) {
+  const [progress, setProgress] = useState(0);
+  const [isFadingOut, setIsFadingOut] = useState(false);
+
+  useEffect(() => {
+    let timer;
+    const updateProgress = () => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          return 100;
+        }
+
+        // Organic step size targeting ~3 seconds total (average ~1% every 30ms)
+        let step = 1;
+        const rand = Math.random();
+        if (rand < 0.25) {
+          step = 0; // Brief pause to look like active processing
+        } else if (rand < 0.75) {
+          step = 1;
+        } else if (rand < 0.93) {
+          step = 2;
+        } else {
+          step = 3;
+        }
+
+        // Near the end, buffer if data is not ready
+        if (prev >= 95) {
+          if (!isDataReady) {
+            // Hold at 99 until data is ready
+            return prev < 99 ? prev + 1 : 99;
+          } else {
+            // Finish normally
+            step = Math.random() < 0.5 ? 1 : 2;
+          }
+        }
+
+        const next = prev + step;
+        return next > 100 ? 100 : next;
+      });
+    };
+
+    timer = setInterval(updateProgress, 30);
+
+    return () => clearInterval(timer);
+  }, [isDataReady]);
+
+  useEffect(() => {
+    if (progress === 100 && isDataReady) {
+      setIsFadingOut(true);
+      const exitTimer = setTimeout(() => {
+        onComplete();
+      }, 400); // 400ms corresponds to CSS transition duration
+      return () => clearTimeout(exitTimer);
+    }
+  }, [progress, isDataReady, onComplete]);
+
   return (
-    <main className="loading-frame">
-      <div className="availability-dot" />
-      <p>Loading portfolio</p>
+    <main className={`loading-frame ${isFadingOut ? "fade-out" : ""}`}>
+      <div className="loading-content">
+        <div className="loading-header">
+          <span className="availability-dot" />
+          <span className="loading-label">Designing Tech</span>
+        </div>
+        <div className="loading-percentage-wrapper">
+          <h1 className="loading-percentage">{progress}</h1>
+          <span className="loading-percent-sign">%</span>
+        </div>
+        <div className="loading-footer">
+          <div className="loading-bar">
+            <div className="loading-bar-fill" style={{ width: `${progress}%` }} />
+          </div>
+          <p className="loading-status">Curating Stories...</p>
+        </div>
+      </div>
     </main>
   );
 }
@@ -648,9 +725,9 @@ function SkillsSection({ experiences = [] }) {
         />
         <div className="skill-chips">
           {["UX", "UI", "Product", "Research"].map((skill, index) => (
-            <span 
-              key={skill} 
-              className="reveal-on-scroll" 
+            <span
+              key={skill}
+              className="reveal-on-scroll"
               style={{ "--stagger-delay": `${index * 80}ms` }}
             >
               {skill}
@@ -661,8 +738,8 @@ function SkillsSection({ experiences = [] }) {
 
       <div className="experience-list">
         {experiences.map(({ role, company, period }, index) => (
-          <div 
-            className="experience-row reveal-on-scroll" 
+          <div
+            className="experience-row reveal-on-scroll"
             style={{ "--stagger-delay": `${index * 80}ms` }}
             key={`${role}-${company}-${index}`}
           >
@@ -692,8 +769,8 @@ function ProcessSection() {
       />
       <div className="timeline">
         {processSteps.map((step, index) => (
-          <article 
-            className="process-card reveal-on-scroll" 
+          <article
+            className="process-card reveal-on-scroll"
             style={{ "--stagger-delay": `${index * 100}ms` }}
             key={step.title}
           >
@@ -715,8 +792,8 @@ function ServicesSection() {
       <SectionHeader eyebrow="Expertise" title="What I'm good at" />
       <div className="service-grid">
         {services.map((service, index) => (
-          <article 
-            className="service-card reveal-on-scroll" 
+          <article
+            className="service-card reveal-on-scroll"
             style={{ "--stagger-delay": `${index * 100}ms` }}
             key={service.title}
           >
@@ -728,9 +805,9 @@ function ServicesSection() {
       <div className="service-tags">
         {["Product Design", "UX Design", "UI Design", "Research", "Communication", "Mobile & Web"].map(
           (tag, index) => (
-            <span 
-              key={tag} 
-              className="reveal-on-scroll" 
+            <span
+              key={tag}
+              className="reveal-on-scroll"
               style={{ "--stagger-delay": `${index * 60}ms` }}
             >
               {tag}
@@ -767,8 +844,8 @@ function FaqSection() {
       <SectionHeader eyebrow="FAQ'S" title="Your concerns, addressed with clarity" />
       <div className="faq-list">
         {faqs.map((faq, index) => (
-          <article 
-            className={`faq-item ${open === index ? "is-open" : ""} reveal-on-scroll`} 
+          <article
+            className={`faq-item ${open === index ? "is-open" : ""} reveal-on-scroll`}
             style={{ "--stagger-delay": `${index * 80}ms` }}
             key={faq.question}
           >

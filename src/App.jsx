@@ -357,19 +357,14 @@ function LoadingFrame({ isDataReady = true, onComplete = () => { } }) {
   return (
     <main className={`loading-frame ${isFadingOut ? "fade-out" : ""}`}>
       <div className="loading-content">
-        <div className="loading-header">
-          <span className="availability-dot" />
-          <span className="loading-label">Designing Tech</span>
-        </div>
-        <div className="loading-percentage-wrapper">
-          <h1 className="loading-percentage">{progress}</h1>
-          <span className="loading-percent-sign">%</span>
-        </div>
-        <div className="loading-footer">
-          <div className="loading-bar">
-            <div className="loading-bar-fill" style={{ width: `${progress}%` }} />
-          </div>
-          <p className="loading-status">Curating Stories...</p>
+        <div className="name-loader" aria-label="Loading portfolio for Tony Lewis MANZI">
+          <span className="name-part">TONY LEWIS</span>
+          <span className="name-dots" aria-hidden="true">
+            <span className="dot" />
+            <span className="dot" />
+            <span className="dot" />
+          </span>
+          <span className="name-part">MANZI</span>
         </div>
       </div>
     </main>

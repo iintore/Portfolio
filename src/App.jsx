@@ -610,8 +610,8 @@ function Hero() {
             <ImagePill src={asset("kigali-map.png")} alt="Kigali map" />
           </h1>
           <p>
-            Hey <span aria-hidden="true">👋🏾</span>, I'm Tony Lewis MANZI, welcome to my world. I love
-            building beautiful, timeless applications & web products experiences
+            Hey <span aria-hidden="true">👋🏾</span>, I'm Tony Lewis MANZI, welcome to my world. For the
+            past 6 years I have been building beautiful, timeless applications & web products experiences
             for users
           </p>
           <PillButton href="https://calendly.com/tonylewismanzi/meet-tony-lewis" target="_blank" rel="noreferrer">
@@ -940,7 +940,7 @@ function Footer() {
           all projects are visually stunning and functionally flawless
         </p>
         <div className="footer-contact">
-          <a href="mailto:tonylewismanzi@gmail.com">tonylewismanzi@gmail.com</a>
+          <a href="mailto:hello@tonylewismanzi.com">hello@tonylewismanzi.com</a>
           <div className="socials">
             <a href="https://www.linkedin.com/in/tonylewismanzi/" aria-label="LinkedIn">
               <FaLinkedinIn />

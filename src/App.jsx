@@ -15,6 +15,7 @@ import {
   X,
 } from "lucide-react";
 import { FaBehance, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
+import { Analytics } from "@vercel/analytics/react";
 
 const asset = (name) => `/assets/${name}`;
 
@@ -294,6 +295,7 @@ export function App() {
           }}
         />
       )}
+      <Analytics />
     </>
   );
 }

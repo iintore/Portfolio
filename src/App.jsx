@@ -720,8 +720,7 @@ function Hero() {
             <ImagePill src={asset("kigali-map.png")} alt="Kigali map" priority />
           </h1>
           <p>
-            Hey <span aria-hidden="true">👋🏾</span>, I'm Tony Lewis MANZI, welcome to my world. For the
-            past 6 years I have been building beautiful, timeless applications & web products experiences
+            For the past 6 years I have been building beautiful, timeless applications & web products experiences
             for users
           </p>
           <PillButton href="https://calendly.com/tonylewismanzi/meet-tony-lewis" target="_blank" rel="noreferrer">

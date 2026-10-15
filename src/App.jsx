@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
+  ArrowRight,
   ArrowUpRight,
   ChevronDown,
   ChevronLeft,
@@ -16,8 +17,97 @@ import {
 } from "lucide-react";
 import { FaBehance, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 import { Analytics } from "@vercel/analytics/react";
+import assetManifest from "./generated/asset-manifest.json";
 
 const asset = (name) => `/assets/${name}`;
+
+// Responsive, lazy, blur-up image backed by the build-time asset manifest
+// (scripts/optimize-assets.mjs). Falls back to the raw file for assets that
+// haven't been optimised yet, e.g. a fresh CMS upload before the next deploy.
+function Img({ src, alt = "", sizes = "100vw", priority = false, style, onLoad, ...props }) {
+  const meta = assetManifest[src];
+  const [loaded, setLoaded] = useState(false);
+
+  if (meta?.video) {
+    return <LazyVideo src={src} aria-label={alt} {...props} style={style} />;
+  }
+
+  const shared = {
+    alt,
+    loading: priority ? "eager" : "lazy",
+    decoding: "async",
+    fetchPriority: priority ? "high" : undefined,
+    ...props,
+  };
+
+  if (!meta) return <img src={src} style={style} {...shared} />;
+
+  const placeholder =
+    meta.blur && !loaded
+      ? { backgroundImage: `url("${meta.blur}")`, backgroundSize: "cover", backgroundPosition: "center" }
+      : null;
+
+  return (
+    <img
+      src={meta.srcset.at(-1)[1]}
+      srcSet={meta.srcset.map(([w, url]) => `${url} ${w}w`).join(", ")}
+      sizes={sizes}
+      width={meta.width}
+      height={meta.height}
+      style={placeholder ? { ...placeholder, ...style } : style}
+      onLoad={(event) => {
+        setLoaded(true);
+        onLoad?.(event);
+      }}
+      {...shared}
+    />
+  );
+}
+
+// Muted looping video (also used for GIFs, which the pipeline turns into MP4)
+// that only starts downloading once it is near the viewport.
+function LazyVideo({ src, priority = false, ...props }) {
+  const meta = assetManifest[src];
+  const ref = React.useRef(null);
+  const [active, setActive] = useState(priority);
+
+  useEffect(() => {
+    if (active || !ref.current) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => entry.isIntersecting && setActive(true),
+      { rootMargin: "300px 0px" },
+    );
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [active]);
+
+  return (
+    <video
+      ref={ref}
+      src={active ? meta?.video || src : undefined}
+      poster={meta?.poster}
+      width={meta?.width}
+      height={meta?.height}
+      preload="none"
+      autoPlay
+      muted
+      loop
+      playsInline
+      {...props}
+    />
+  );
+}
+
+function useMediaQuery(query) {
+  const [matches, setMatches] = useState(() => window.matchMedia(query).matches);
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    const onChange = () => setMatches(media.matches);
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
+  }, [query]);
+  return matches;
+}
 
 const services = [
   { title: "UI/UX Design", image: asset("service-uiux.jpg") },
@@ -27,6 +117,26 @@ const services = [
 ];
 
 
+
+// Personal tools & side apps shown under the projects section.
+const tools = [
+  {
+    name: "Lummiey",
+    tagline: "Interaction Library",
+    description: "The world's best UI/UX interactions, in the wild and in motion",
+    logo: asset("tool-lummiey-logo.svg"),
+    url: "https://lummiey.vercel.app/",
+    links: [{ label: "Live app", href: "https://lummiey.vercel.app/" }],
+  },
+  {
+    name: "Open Figment",
+    tagline: "Design System",
+    description: "Foundations, components and blocks of an open-source collaborative design tool",
+    logo: asset("tool-open-figment-logo.svg"),
+    url: "https://open-figment-design-system.vercel.app/",
+    links: [{ label: "Live app", href: "https://open-figment-design-system.vercel.app/" }],
+  },
+];
 
 const processSteps = [
   {
@@ -570,6 +680,7 @@ function HomePage({ caseStudies, experiences, navigate, openProject }) {
       <Hero />
       <BlurDivider />
       <ProjectsPreview projects={featured} navigate={navigate} openProject={openProject} />
+      <ToolsSection />
       <SkillsSection experiences={experiences} />
       <ProcessSection />
       <ServicesSection />
@@ -581,24 +692,21 @@ function HomePage({ caseStudies, experiences, navigate, openProject }) {
 }
 
 function Hero() {
+  // The orb is hidden on mobile, so don't download it there at all.
+  const showVideo = useMediaQuery("(min-width: 761px)");
+
   return (
     <section className="hero" id="hero">
-      <video
-        className="hero-video"
-        src={asset("hero-orb-video.mp4")}
-        data-parallax="30"
-        autoPlay
-        muted
-        loop
-        playsInline
-      />
+      {showVideo && (
+        <LazyVideo className="hero-video" src={asset("hero-orb-video.mp4")} data-parallax="30" priority />
+      )}
       <div className="hero-inner">
         <div className="hero-copy">
           <h1>
             <span className="muted-title">Hey, </span>
             <br className="mobile-only-break" />
             <span className="muted-title">I'm </span>
-            <ImagePill src={asset("tony-headshot.png")} alt="Tony Lewis MANZI" />
+            <ImagePill src={asset("tony-headshot.png")} alt="Tony Lewis MANZI" priority />
             <span>Tony Lewis</span>
             <br />
             <span className="desktop-product-line">
@@ -609,7 +717,7 @@ function Hero() {
             <br className="location-break" />
             <span className="muted-title">Based in </span>
             <span>Kigali</span>
-            <ImagePill src={asset("kigali-map.png")} alt="Kigali map" />
+            <ImagePill src={asset("kigali-map.png")} alt="Kigali map" priority />
           </h1>
           <p>
             Hey <span aria-hidden="true">👋🏾</span>, I'm Tony Lewis MANZI, welcome to my world. For the
@@ -625,10 +733,10 @@ function Hero() {
   );
 }
 
-function ImagePill({ src, alt }) {
+function ImagePill({ src, alt, priority = false }) {
   return (
     <span className="image-pill">
-      <img src={src} alt={alt} />
+      <Img src={src} alt={alt} sizes="72px" priority={priority} />
     </span>
   );
 }
@@ -636,8 +744,8 @@ function ImagePill({ src, alt }) {
 function ProjectPills() {
   return (
     <span className="project-pills">
-      <ImagePill src={asset("hero-project-1.png")} alt="project preview" />
-      <ImagePill src={asset("hero-project-2.png")} alt="project preview" />
+      <ImagePill src={asset("hero-project-1.png")} alt="project preview" priority />
+      <ImagePill src={asset("hero-project-2.png")} alt="project preview" priority />
     </span>
   );
 }
@@ -690,13 +798,61 @@ function ProjectCard({ project, openProject, compact = false, staggerIndex = 0 }
       }}
     >
       <div className="project-image">
-        <img src={project.heroImage} alt={`${project.title} project`} data-parallax="18" />
+        <Img
+          src={project.heroImage}
+          alt={`${project.title} project`}
+          sizes={compact ? "(max-width: 760px) 100vw, 560px" : "(max-width: 760px) 100vw, 1140px"}
+          data-parallax="18"
+        />
       </div>
       <div className="project-row">
         <h3>{project.title}</h3>
         <ArrowUpRight size={20} strokeWidth={1.6} />
       </div>
     </a>
+  );
+}
+
+function ToolsSection() {
+  return (
+    <section className="section tools-section" id="tools">
+      <SectionHeader eyebrow="Personal Tools" title="Apps I build for myself, and for others" />
+      <ul className="tool-list">
+        {tools.map((tool, index) => (
+          <li
+            className="tool-row reveal-on-scroll"
+            style={{ "--stagger-delay": `${index * 60}ms` }}
+            key={tool.url}
+          >
+            <a
+              className="tool-main"
+              href={tool.url}
+              target="_blank"
+              rel="noreferrer"
+              data-cursor-label="Open app"
+            >
+              <img className="tool-logo" src={tool.logo} alt="" width="40" height="40" loading="lazy" />
+              <span className="tool-text">
+                <span className="tool-name">
+                  {tool.name} <span>{tool.tagline}</span>
+                </span>
+                <span className="tool-description">{tool.description}</span>
+              </span>
+            </a>
+            <span className="tool-links">
+              {tool.links.map((link) => (
+                <a href={link.href} target="_blank" rel="noreferrer" key={link.label}>
+                  {link.label}
+                </a>
+              ))}
+            </span>
+            <a className="tool-arrow" href={tool.url} target="_blank" rel="noreferrer" aria-label={`Open ${tool.name}`}>
+              <ArrowRight size={20} strokeWidth={1.6} />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
@@ -708,14 +864,16 @@ function SkillsSection({ experiences = [] }) {
         title="The knowledge that powers my designs and empathy"
       />
       <div className="skills-card">
-        <img
+        <Img
           className="skills-bg"
+          sizes="(max-width: 760px) 100vw, 1140px"
           src={asset("skills-bg.png")}
           alt="Design work table"
           data-parallax="14"
         />
-        <img
+        <Img
           className="profile-orb"
+          sizes="160px"
           src={asset("profile-cutout.png")}
           alt="Tony Lewis MANZI"
           data-parallax="-10"
@@ -757,18 +915,61 @@ function SkillsSection({ experiences = [] }) {
   );
 }
 
+// Sticky stacking cards: each step slides up over the previous one, which
+// recedes (scales down and dims) as it gets covered.
+function useStackedCards(ref) {
+  useEffect(() => {
+    const container = ref.current;
+    if (!container) return undefined;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const cards = [...container.querySelectorAll(".process-card")];
+      cards.forEach((card, index) => {
+        const next = cards[index + 1];
+        let progress = 0;
+        if (next) {
+          const rect = card.getBoundingClientRect();
+          const distance = next.getBoundingClientRect().top - rect.top;
+          progress = Math.max(0, Math.min(1, 1 - distance / rect.height));
+        }
+        const depth = cards.length - 1 - index;
+        card.style.setProperty("--stack-scale", (1 - progress * 0.04 * Math.min(depth, 2)).toFixed(4));
+        card.style.setProperty("--stack-dim", (progress * 0.5).toFixed(3));
+      });
+    };
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
+  }, [ref]);
+}
+
 function ProcessSection() {
+  const timelineRef = React.useRef(null);
+  useStackedCards(timelineRef);
+
   return (
     <section className="section process-section">
       <SectionHeader
         eyebrow="Process"
         title="The strategy behind exceptional results"
       />
-      <div className="timeline">
+      <div className="timeline" ref={timelineRef}>
         {processSteps.map((step, index) => (
           <article
-            className="process-card reveal-on-scroll"
-            style={{ "--stagger-delay": `${index * 100}ms` }}
+            className="process-card"
+            style={{ "--stack-index": index }}
             key={step.title}
           >
             <span className="timeline-dot" />
@@ -794,7 +995,7 @@ function ServicesSection() {
             style={{ "--stagger-delay": `${index * 100}ms` }}
             key={service.title}
           >
-            <img src={service.image} alt={service.title} data-parallax="10" />
+            <Img src={service.image} alt={service.title} sizes="170px" data-parallax="10" />
             <h3>{service.title}</h3>
           </article>
         ))}
@@ -822,7 +1023,7 @@ function TestimonialsSection() {
       <div className="served-row">
         <div className="avatar-stack">
           {["user-1.png", "user-2.png", "user-3.jpg", "user-4.jpeg"].map((name) => (
-            <img src={asset(name)} alt="client" key={name} />
+            <Img src={asset(name)} alt="client" sizes="28px" key={name} />
           ))}
         </div>
         <p>
@@ -1109,8 +1310,9 @@ function ProjectDrawer({ project, caseStudies, onClose, openProject }) {
             {sections.map((section) =>
               section.type === "image" ? (
                 <figure className="case-drawer-media" key={section.id}>
-                  <img
+                  <Img
                     src={section.image}
+                    sizes="(max-width: 760px) 100vw, 1200px"
                     alt={section.caption || `${project.title} case study`}
                     data-parallax="8"
                   />

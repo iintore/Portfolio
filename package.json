@@ -4,10 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node server.mjs",
-    "build": "vite build",
+    "dev": "node scripts/optimize-assets.mjs && node server.mjs",
+    "build": "node scripts/optimize-assets.mjs && vite build",
     "start": "NODE_ENV=production node server.mjs",
-    "preview": "vite preview --host 127.0.0.1"
+    "preview": "vite preview --host 127.0.0.1",
+    "optimize-assets": "node scripts/optimize-assets.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
@@ -18,5 +19,9 @@
     "react-dom": "19.2.0",
     "react-icons": "5.5.0",
     "vite": "6.4.2"
+  },
+  "devDependencies": {
+    "ffmpeg-static": "^5.2.0",
+    "sharp": "^0.34.4"
   }
 }

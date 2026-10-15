@@ -1291,7 +1291,7 @@ function ProjectDrawer({ project, caseStudies, onClose, openProject }) {
               </p>
               <h1>{project.title}</h1>
               <p>{project.summary}</p>
-              <PillButton href={project.previewUrl}>Live Preview</PillButton>
+              {project.previewUrl && <PillButton href={project.previewUrl}>Live Preview</PillButton>}
             </div>
             <div className="case-meta">
               <div>
@@ -1302,6 +1302,12 @@ function ProjectDrawer({ project, caseStudies, onClose, openProject }) {
                 <span>Role</span>
                 <p>{project.services}</p>
               </div>
+              {project.year && (
+                <div>
+                  <span>Year</span>
+                  <p>{project.year}</p>
+                </div>
+              )}
             </div>
           </section>
 
@@ -1846,6 +1852,7 @@ function CmsPage({ caseStudies, setCaseStudies, experiences = [], setExperiences
               <CmsInput label="Company" value={selected.client} onChange={(v) => updateSelected("client", v)} />
               <CmsInput label="Role" value={selected.services} onChange={(v) => updateSelected("services", v)} />
               <CmsInput label="Preview URL" value={selected.previewUrl} onChange={(v) => updateSelected("previewUrl", v)} />
+              <CmsInput label="Year" value={selected.year || ""} onChange={(v) => updateSelected("year", v)} />
               <div className="cms-upload-field">
                 <label>Hero Image (UI Screenshot to macOS Thumbnail)</label>
                 <div className="cms-upload-controls">

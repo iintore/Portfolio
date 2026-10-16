@@ -2,8 +2,13 @@ import express from "express";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { ContactError, sendContactMessage } from "./api/_contact.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Local secrets (e.g. RESEND_API_KEY) live in an untracked .env file.
+try {
+  process.loadEnvFile(path.join(__dirname, ".env"));
+} catch {}
 const app = express();
 const port = Number(process.env.PORT || 3000);
 const isProd = process.env.NODE_ENV === "production";
@@ -73,6 +78,15 @@ app.put("/api/experiences", async (req, res) => {
     res.json({ ok: true, experiences: req.body });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+app.post("/api/contact", async (req, res) => {
+  try {
+    res.json(await sendContactMessage(req.body));
+  } catch (error) {
+    const status = error instanceof ContactError ? error.status : 500;
+    res.status(status).json({ error: status === 500 ? "Something went wrong. Please try again." : error.message });
   }
 });
 

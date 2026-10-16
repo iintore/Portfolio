@@ -6,3 +6,5 @@ qa/
 .gemini/
 *local-*.png
 *.log
+.env
+.env.local

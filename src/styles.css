@@ -1327,6 +1327,45 @@ textarea:focus {
   transition: transform 260ms ease, box-shadow 260ms ease;
 }
 
+.submit-button:disabled {
+  opacity: 0.7;
+  cursor: progress;
+  transform: none;
+}
+
+.contact-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.contact-form {
+  position: relative;
+}
+
+.form-status {
+  grid-column: 1 / -1;
+  margin: -6px 0 0;
+  min-height: 0;
+  font-size: 14px;
+  line-height: 22px;
+  text-align: center;
+}
+
+.form-status:empty {
+  display: none;
+}
+
+.form-status.sent {
+  color: #1f7a3f;
+}
+
+.form-status.error {
+  color: #b42318;
+}
+
 .submit-button:hover {
   transform: translateY(-2px);
   box-shadow: rgba(61, 61, 61, 0.72) 0 0.6px 1.08px -1.25px,

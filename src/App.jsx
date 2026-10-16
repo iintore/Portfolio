@@ -142,22 +142,22 @@ const processSteps = [
   {
     label: "step1",
     title: "Getting Close to the Problem",
-    body: "Before designing anything, we spent time understanding what people were struggling with, what the business needed, and where opportunities existed.",
+    body: "Before I design anything, I spend time understanding what people are struggling with, what the business needs, and where the real opportunities are.",
   },
   {
     label: "step2",
     title: "Finding What Matters Most",
-    body: "Not every problem deserves a solution. We identified the biggest pain points, aligned on priorities, and focused on what would create the most value.",
+    body: "Not every problem deserves a solution. I pinpoint the biggest pain points, align with the team on priorities, and focus on what will create the most value.",
   },
   {
     label: "step3",
     title: "Turning Ideas Into Experiences",
-    body: "I explored concepts, mapped journeys, tested flows, and refined the experience until it felt simple, intuitive, and ready for real users.",
+    body: "I explore concepts, map journeys, test flows, and keep refining the experience until it feels simple, intuitive, and ready for real users.",
   },
   {
     label: "step4",
     title: "And Bringing It Into the Real World",
-    body: "Design doesn't stop in Figma. We worked closely with developers, launched the product, gathered feedback, and continued improving the experience.",
+    body: "Design doesn't stop in Figma. I work closely with developers through launch, gather feedback, and keep improving the experience long after it ships.",
   },
 ];
 
@@ -1069,7 +1069,30 @@ function FaqSection() {
 }
 
 function ContactSection() {
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState("idle");
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    setStatus("sending");
+    setError("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || "Your message couldn't be sent. Please try again.");
+      form.reset();
+      setStatus("sent");
+    } catch (err) {
+      setError(err.message);
+      setStatus("error");
+    }
+  };
 
   return (
     <section className="section contact-section" id="contact">
@@ -1077,24 +1100,20 @@ function ContactSection() {
         eyebrow="Contact"
         title="Reach out and let's bring your vision to life"
       />
-      <form
-        className="contact-form reveal-on-scroll"
-        onSubmit={(event) => {
-          event.preventDefault();
-          setSent(true);
-        }}
-      >
+      <form className="contact-form reveal-on-scroll" onSubmit={handleSubmit}>
+        {/* Honeypot for bots, hidden from people and screen readers. */}
+        <input className="contact-honeypot" name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" />
         <label>
           Full Name
-          <input name="name" placeholder="John Murinzi" />
+          <input name="name" placeholder="John Murinzi" required maxLength={120} autoComplete="name" />
         </label>
         <label>
           Email Address
-          <input name="email" type="email" placeholder="murinzi@example.com" />
+          <input name="email" type="email" placeholder="murinzi@example.com" required maxLength={200} autoComplete="email" />
         </label>
         <label className="wide">
           Website (optional)
-          <input name="website" placeholder="Company Website" />
+          <input name="website" placeholder="Company Website" maxLength={300} autoComplete="url" />
         </label>
         <label className="wide">
           Select Budget
@@ -1110,14 +1129,18 @@ function ContactSection() {
         </label>
         <label className="wide">
           How may I assist you?
-          <textarea name="message" placeholder="Give us more info.." />
+          <textarea name="message" placeholder="Give us more info.." required minLength={10} maxLength={5000} />
         </label>
-        <button className="submit-button" type="submit">
-          {sent ? "Message Ready" : "Send Your Message"}
+        <button className="submit-button" type="submit" disabled={status === "sending"}>
+          {status === "sending" ? "Sending…" : status === "sent" ? "Message Sent ✓" : "Send Your Message"}
         </button>
+        <p className={`form-status ${status}`} role="status" aria-live="polite">
+          {status === "sent" && "Thanks! Your message is on its way, I'll get back to you soon."}
+          {status === "error" && error}
+        </p>
       </form>
       <div className="book-call">
-        <p>Preffer to Book a call ?</p>
+        <p>Prefer to book a call?</p>
         <a
           href="https://calendly.com/tonylewismanzi/meet-tony-lewis"
           target="_blank"

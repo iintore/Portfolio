@@ -1103,8 +1103,8 @@ function ContactSection() {
               Select...
             </option>
             <option>Less than $1,000</option>
-            <option>$2,000 - $3,000</option>
-            <option>$3,000 - $4,000</option>
+            <option>$1,000 - $2,000</option>
+            <option>$2,000 - $4,000</option>
             <option>$4,000+</option>
           </select>
         </label>

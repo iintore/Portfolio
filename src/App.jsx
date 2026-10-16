@@ -710,10 +710,10 @@ function Hero() {
             <span>Tony Lewis</span>
             <br />
             <span className="desktop-product-line">
-              <span>Senior UI/UX Designer</span>
+              <span>Senior Product Designer</span>
               <ProjectPills />
             </span>
-            <span className="mobile-product-title">Senior UI/UX Designer</span>
+            <span className="mobile-product-title">Senior Product Designer</span>
             <br className="location-break" />
             <span className="muted-title">Based in </span>
             <span>Kigali</span>

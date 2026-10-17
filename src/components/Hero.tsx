@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { hero, site } from "../content";
 import { Pin } from "./Icons";
 import { CHAR_STAGGER, CLOUD_LOOP, FLOAT_LOOP, HERO_LETTER, spring } from "../lib/motion";
+import { Media } from "./Media";
 
 // Cloud loops: small clouds drift to (110, -27), the large band to (-48, -47),
 // 12s tween with ease-in-out, mirrored forever.
@@ -43,19 +44,20 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={spring(1.5, 0.2, 1)}
         >
-          <img src={hero.figure} alt="" />
+          {/* the LCP image: responsive AVIF/WebP, fetched with high priority */}
+          <Media name={hero.figure} sizes="(min-width: 1200px) min(75vw, 1140px), 197vw" alt="Tony Lewis" priority />
         </motion.div>
         <motion.div className="cloud cloud--fade-right cloud--1" {...cloudDriftA}>
-          <img src="/decor/cloud-a.png" alt="" />
+          <img src="/decor/cloud-a.webp" alt="" />
         </motion.div>
         <motion.div className="cloud cloud--fade-right cloud--2" {...cloudDriftA}>
-          <img src="/decor/cloud-a.png" alt="" />
+          <img src="/decor/cloud-a.webp" alt="" />
         </motion.div>
         <motion.div className="cloud cloud--fade-right cloud--3" {...cloudDriftA}>
-          <img src="/decor/cloud-a.png" alt="" />
+          <img src="/decor/cloud-a.webp" alt="" />
         </motion.div>
         <motion.div className="cloud cloud--band cloud--4" {...cloudDriftB}>
-          <img src="/decor/cloud-b.png" alt="" />
+          <img src="/decor/cloud-b.webp" alt="" />
         </motion.div>
 
         <div className="hero__content">

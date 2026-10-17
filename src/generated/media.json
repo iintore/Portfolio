@@ -1,0 +1,55 @@
+{
+  "hero-figure": {
+    "hash": "5b5da436cc",
+    "width": 1448,
+    "height": 1086,
+    "alpha": true,
+    "sources": {
+      "avif": [
+        [
+          "/media/hero-figure-5b5da436cc-480.avif",
+          480
+        ],
+        [
+          "/media/hero-figure-5b5da436cc-768.avif",
+          768
+        ],
+        [
+          "/media/hero-figure-5b5da436cc-1080.avif",
+          1080
+        ],
+        [
+          "/media/hero-figure-5b5da436cc-1440.avif",
+          1440
+        ],
+        [
+          "/media/hero-figure-5b5da436cc-1448.avif",
+          1448
+        ]
+      ],
+      "webp": [
+        [
+          "/media/hero-figure-5b5da436cc-480.webp",
+          480
+        ],
+        [
+          "/media/hero-figure-5b5da436cc-768.webp",
+          768
+        ],
+        [
+          "/media/hero-figure-5b5da436cc-1080.webp",
+          1080
+        ],
+        [
+          "/media/hero-figure-5b5da436cc-1440.webp",
+          1440
+        ],
+        [
+          "/media/hero-figure-5b5da436cc-1448.webp",
+          1448
+        ]
+      ]
+    },
+    "blur": null
+  }
+}

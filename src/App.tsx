@@ -11,6 +11,7 @@ import { Closing } from "./components/Closing";
 import { Resume } from "./pages/Resume";
 import { CaseStudy } from "./pages/CaseStudy";
 import { HoverCursorProvider } from "./components/HoverCursor";
+import { applyPageMeta } from "./lib/pageMeta";
 
 export default function App() {
   // the reference shows its loader once per browser session
@@ -31,6 +32,7 @@ export default function App() {
   }, []);
 
   const path = window.location.pathname.replace(/\/+$/, "") || "/";
+  useEffect(() => applyPageMeta(path), [path]);
   const page =
     path === "/resume" ? (
       <Resume />

@@ -6,7 +6,7 @@
 //
 // usage: node scripts/make-assets.mjs [referenceImagesDir]
 import sharp from "sharp";
-import { mkdirSync, existsSync, readdirSync } from "node:fs";
+import { mkdirSync, existsSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -54,11 +54,11 @@ async function sky(name, w, h, refPrefix) {
 }
 
 // ── grain: feTurbulence noise tile ─────────────────────────────────────────
+// grain: the SVG noise filter itself (~0.4 KB) instead of a rasterised tile;
+// feTurbulence is spec-defined, so browsers render the same grain
 async function noise(name, size) {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
-    <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
-    <rect width="100%" height="100%" filter="url(#n)"/></svg>`;
-  await sharp(Buffer.from(svg)).png().toFile(join(OUT, "decor", name));
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>`;
+  writeFileSync(join(OUT, "decor", name), svg);
 }
 
 // ── placeholders ───────────────────────────────────────────────────────────
@@ -132,7 +132,7 @@ async function resumeSheet(name, w, h) {
 await Promise.all([
   sky("sky-hero.webp", 2048, 1320, "7034c51a"),
   sky("sky-card.webp", 2048, 1321, "f99fe451"),
-  noise("noise.png", 256),
+  noise("noise.svg", 256),
   // hero figure cut-out, 2048×1153, figure sits right of centre
   cutout("hero-figure.png", 2048, 1153, [0.36, 0.08, 0.3, 0.9], "Hero cut-out (transparent PNG)"),
   photo("avatar.webp", 256, 256, "Avatar"),

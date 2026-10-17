@@ -1,4 +1,4 @@
-// Procedural clouds, rendered as transparent PNGs (no photos involved).
+// Procedural clouds, rendered as transparent WebP images (no photos involved).
 //
 // Two kinds:
 //  • "wisp"    long, soft, streaky clouds (hero + project cards)
@@ -241,7 +241,7 @@ async function render(name, W, H, kind, c) {
   }
   let img = sharp(px, { raw: { width: W, height: H, channels: 4 } });
   if (c.soften > 0.3) img = img.blur(c.soften);
-  await img.png({ compressionLevel: 9 }).toFile(join(OUT, name));
+  await img.webp({ quality: 80, alphaQuality: 90, effort: 6, smartSubsample: true }).toFile(join(OUT, name));
   console.log("wrote", name, `${W}x${H}`);
 }
 
@@ -254,11 +254,11 @@ const wisp = {
   tone: [15, 13, 12, 10, 10, 11, 7, 9, 9, 5],
   blobs: 20, stretch: 1.8, falloff: 1.55, lift: 0.9, baseSoft: 0.14, soften: 2.4,
 };
-await render("cloud-a.png", 2048, 788, "wisp", {
+await render("cloud-a.webp", 2048, 788, "wisp", {
   ...wisp, seed: 7, x0: 0.07, x1: 0.93, base: 0.76, rMin: 0.08, rMax: 0.48,
   peaks: [[0.36, 0.1, 1], [0.58, 0.14, 0.55], [0.82, 0.08, 0.3]],
 });
-await render("cloud-b.png", 2048, 1008, "wisp", {
+await render("cloud-b.webp", 2048, 1008, "wisp", {
   ...wisp, seed: 31, x0: 0.08, x1: 0.93, base: 0.8, rMin: 0.06, rMax: 0.4,
   tone: [20, 20, 18, 16, 15, 12, 0, 0, 0, 0],
   peaks: [[0.62, 0.1, 1], [0.42, 0.14, 0.6], [0.2, 0.1, 0.3]],
@@ -271,12 +271,12 @@ const cumulus = {
   tone: [13, 9, 8, 11, 15, 13, 11, 9, 8, 3],
   body: 7, x0: 0.13, x1: 0.87, rBody: 0.26, stretch: 1.3, falloff: 1.6, base: 0.88, baseSoft: 0.1, soften: 0.45,
 };
-await render("cloud-left.png", 1024, 558, "cumulus", {
+await render("cloud-left.webp", 1024, 558, "cumulus", {
   ...cumulus, seed: 41,
   towers: [[0.27, 0.5, 0.2], [0.44, 0.45, 0.17], [0.66, 0.49, 0.19], [0.85, 0.56, 0.15], [0.12, 0.62, 0.14]],
   frags: [[0.6, 0.16, 0.13], [0.26, 0.24, 0.1]],
 });
-await render("cloud-right.png", 1024, 558, "cumulus", {
+await render("cloud-right.webp", 1024, 558, "cumulus", {
   ...cumulus, seed: 97,
   towers: [[0.24, 0.54, 0.19], [0.47, 0.48, 0.17], [0.66, 0.43, 0.2], [0.84, 0.52, 0.16]],
   frags: [[0.34, 0.18, 0.12], [0.82, 0.2, 0.08]],

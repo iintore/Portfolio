@@ -1167,7 +1167,7 @@ img {
 .polaroid__grain {
   position: absolute;
   inset: 0;
-  background: url("/decor/noise.png");
+  background: url("/decor/noise.svg");
   background-size: 200px 200px;
   opacity: 0.5;
   mix-blend-mode: multiply;
@@ -1531,7 +1531,7 @@ img {
 .grain {
   position: absolute;
   inset: 0;
-  background: url("/decor/noise.png");
+  background: url("/decor/noise.svg");
   background-size: 256px 256px;
   opacity: 0.04;
   pointer-events: none;
@@ -2672,6 +2672,11 @@ img {
 }
 
 /* ── mobile (< 1200px): declared rules of the reference's phone layout ─── */
+
+/* media pipeline <picture>: lays out as if the <img> were placed directly */
+.media {
+  display: contents;
+}
 
 /* ── custom hover cursors ─────────────────────────────────────────────── */
 [data-hover-cursor],

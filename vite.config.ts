@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 
@@ -15,7 +16,24 @@ function robotsPerEnvironment(): Plugin {
   };
 }
 
+// The hero photo is the largest thing painted on load, but React only creates
+// its <img> after the app script runs. Preloading it from the HTML starts the
+// download immediately, with the same AVIF srcset/sizes the <Media> uses.
+function preloadHeroImage(): Plugin {
+  return {
+    name: "preload-hero-image",
+    transformIndexHtml(html) {
+      const manifest = JSON.parse(readFileSync(new URL("./src/generated/media.json", import.meta.url), "utf8"));
+      const hero = manifest["hero-figure"];
+      if (!hero) return html;
+      const srcset = hero.sources.avif.map(([url, w]: [string, number]) => `${url} ${w}w`).join(", ");
+      const tag = `<link rel="preload" as="image" type="image/avif" fetchpriority="high" imagesrcset="${srcset}" imagesizes="(min-width: 1200px) min(75vw, 1140px), 197vw" />`;
+      return html.replace("</head>", `    ${tag}\n  </head>`);
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react(), robotsPerEnvironment()],
+  plugins: [react(), robotsPerEnvironment(), preloadHeroImage()],
   server: { port: 5180 },
 });

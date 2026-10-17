@@ -91,11 +91,11 @@ function Card({ index, progress }: { index: number; progress: MotionValue<number
       </motion.div>
       <div className="card__cloud-a-wrap">
         <motion.div className="cloud cloud--fade-right" {...cloudDriftA}>
-          <img src="/decor/cloud-a.png" alt="" />
+          <img src="/decor/cloud-a.webp" alt="" />
         </motion.div>
       </div>
       <motion.div className="cloud cloud--band card__cloud-b" {...cloudDriftB}>
-        <img src="/decor/cloud-b.png" alt="" />
+        <img src="/decor/cloud-b.webp" alt="" />
       </motion.div>
       <ProgressiveBlur />
       <div className="card__content">

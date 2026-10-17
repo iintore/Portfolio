@@ -23,8 +23,8 @@ function SideCloud({ side, className, src }: { side: "left" | "right"; className
 export function SideClouds({ variant }: { variant: "section" | "contact" }) {
   return (
     <>
-      <SideCloud side="left" className={`side-cloud--left side-cloud--${variant}`} src="/decor/cloud-left.png" />
-      <SideCloud side="right" className={`side-cloud--right side-cloud--${variant}`} src="/decor/cloud-right.png" />
+      <SideCloud side="left" className={`side-cloud--left side-cloud--${variant}`} src="/decor/cloud-left.webp" />
+      <SideCloud side="right" className={`side-cloud--right side-cloud--${variant}`} src="/decor/cloud-right.webp" />
     </>
   );
 }

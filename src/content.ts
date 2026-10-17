@@ -31,7 +31,7 @@ export const hero = {
   line2: "designer",
   currently: "Building consumer & enterprise products @",
   company: { name: "IST Group", logo: "/brand/ist-badge.png" },
-  figure: "/hero/figure.webp",
+  figure: "hero-figure", // media pipeline name (media/hero-figure.webp)
 };
 
 // `accent` marks the word set in the script face and tinted blue once revealed.

@@ -1,37 +1,28 @@
-# Tony Lewis MANZI Portfolio
+# Tony Lewis — Portfolio (redesign)
 
-Local recreation of the Framer portfolio at `https://affable-company-306797.framer.app`, with Framer-inspired motion, project drawers, a custom project-hover cursor, and a file-backed case-study CMS.
+Vite + React + TypeScript, animated with framer-motion and Lenis smooth scroll.
 
-## Run Locally
+## Scripts
 
-```bash
-npm install
-npm run dev
-```
+| command | what it does |
+| --- | --- |
+| `npm run dev` | local dev server |
+| `npm run build` | type-check and production build to `dist/` |
+| `npm run preview` | serve the production build locally |
+| `npm run assets` | regenerate decor (sky gradients, grain, placeholders) and the procedural clouds |
+| `npm run clouds` | regenerate only the procedural clouds |
 
-Open `http://127.0.0.1:3000`.
+## Environments
 
-## CMS
+- **Production**: `main` → tonylewismanzi.com
+- **Redesign (testing)**: `redesign` → Vercel preview deployment for this branch
 
-Open `http://127.0.0.1:3000/cms`.
+Builds that are not production (`VERCEL_ENV !== "production"`) are marked `noindex`, so previews never compete with the live site in search results.
 
-The CMS edits `/content/case-studies.json`. Use it to add, duplicate, delete, feature, and edit case studies. Each case study has a story feed made from ordered text and image blocks, so you can add sections such as introduction, problem treatment, outcome, and images between paragraphs.
+## Pages
 
-Image paths should point to files in `/public/assets`, for example `/assets/project-strettch.png`.
+- `/` home
+- `/case-study` project case study
+- `/resume` resume
 
-## Project Interaction
-
-Project cards open a bottom drawer instead of navigating to a full page. Direct URLs such as `http://127.0.0.1:3000/projects/strettchcloudinfra` still work and open the matching drawer over the projects index.
-
-## Production
-
-```bash
-npm run build
-npm run start
-```
-
-The Node server serves the built site and keeps the CMS API available. Static-only hosting will show the portfolio, but it will not support CMS saves unless you also host the Node server.
-
-## QA
-
-See `design-qa.md` for the visual, interaction, CMS, and production routing checks.
+Copy and images live in `src/content.ts`; placeholders are marked as such until real content replaces them.

@@ -1,10 +1,8 @@
 node_modules/
 dist/
-.npm-cache/
+.vercel/
 .DS_Store
-qa/
-.gemini/
-*local-*.png
 *.log
 .env
-.env.local
+.env.*
+!.env.example

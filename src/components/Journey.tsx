@@ -4,12 +4,15 @@ import { journey } from "../content";
 import { Pin } from "./Icons";
 import { Separator, SectionHead } from "./Section";
 import { APPEAR_SPRING, TRACK_SPRING } from "../lib/motion";
+import { useHoverCursor } from "./HoverCursor";
 
 type Role = (typeof journey.roles)[number];
 
 // resting tilt of each card, left → right, and which ones rise in on scroll
 const TILT = [2, -2, 1, -1];
 const RISES = [true, true, false, false];
+// work thumbnails shown in the hover cursor until a role provides its own `shots`
+const ROLE_SHOTS = ["/placeholders/screen-1.png", "/placeholders/screen-2.png", "/placeholders/screen-3.png"];
 
 function Marker({ role }: { role: Role }) {
   const pill = (
@@ -44,8 +47,11 @@ function Marker({ role }: { role: Role }) {
 function RoleCard({ role, index }: { role: Role; index: number }) {
   const rotate = TILT[index % TILT.length];
   const rises = RISES[index] ?? false;
+  const shots = "shots" in role && Array.isArray(role.shots) ? (role.shots as string[]) : ROLE_SHOTS;
+  const cursor = useHoverCursor({ kind: "stack", images: shots });
   return (
     <motion.div
+      {...cursor}
       className="role__card"
       style={{ rotate }}
       initial={rises ? { opacity: 0, y: 120 } : false}

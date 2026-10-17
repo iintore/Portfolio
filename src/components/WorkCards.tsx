@@ -1,13 +1,15 @@
 import { useRef } from "react";
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform, type MotionValue } from "framer-motion";
 import { work } from "../content";
 import { PillButton } from "./Button";
 import { SectionHead, Separator } from "./Section";
 import { cloudDriftA, cloudDriftB } from "./Hero";
-import { APPEAR_SPRING } from "../lib/motion";
+import { APPEAR_SPRING, CARD_STACK_SPRING } from "../lib/motion";
+import { useHoverCursor } from "./HoverCursor";
 
 // Stack: every card rises 100px and shrinks to 0.7 / 0.8 / 0.9 across the whole
-// stack's scroll range, so earlier cards recede behind later ones.
+// stack's scroll range, so earlier cards recede behind later ones; both values
+// are smoothed by a spring (stiffness 400, damping 80), like the reference.
 const END_SCALE = [0.7, 0.8, 0.9];
 const STICKY_TOP = [0, 50, 100];
 
@@ -53,8 +55,10 @@ const appear = (initial: Record<string, number>) => ({
 
 function Card({ index, progress }: { index: number; progress: MotionValue<number> }) {
   const p = work.projects[index];
-  const scale = useTransform(progress, [0, 1], [1, END_SCALE[index]]);
-  const y = useTransform(progress, [0, 1], [0, -100]);
+  const scale = useSpring(useTransform(progress, [0, 1], [1, END_SCALE[index]]), CARD_STACK_SPRING);
+  const y = useSpring(useTransform(progress, [0, 1], [0, -100]), CARD_STACK_SPRING);
+  // custom cursor over the content card: arrow for the live case study, lock otherwise
+  const cursor = useHoverCursor({ kind: "glass", icon: p.cta.kind === "primary" ? "arrow" : "lock" });
   const glassBody = (
     <>
       <div className="glass__header">
@@ -96,11 +100,11 @@ function Card({ index, progress }: { index: number; progress: MotionValue<number
       <ProgressiveBlur />
       <div className="card__content">
         {p.cta.kind === "primary" ? (
-          <motion.a className="glass" href={p.cta.href} {...glassMotion}>
+          <motion.a className="glass" href={p.cta.href} {...glassMotion} {...cursor}>
             {glassBody}
           </motion.a>
         ) : (
-          <motion.div className="glass" {...glassMotion}>
+          <motion.div className="glass" {...glassMotion} {...cursor}>
             {glassBody}
           </motion.div>
         )}

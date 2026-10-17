@@ -10,6 +10,7 @@ import { Journey } from "./components/Journey";
 import { Closing } from "./components/Closing";
 import { Resume } from "./pages/Resume";
 import { CaseStudy } from "./pages/CaseStudy";
+import { HoverCursorProvider } from "./components/HoverCursor";
 
 export default function App() {
   // the reference shows its loader once per browser session
@@ -47,10 +48,12 @@ export default function App() {
     );
 
   return (
+    <HoverCursorProvider>
     <div className="page">
       {page}
       <Nav back={path !== "/"} openAtTop={path !== "/resume"} wideFrom={path === "/case-study" ? 810 : 1200} />
       {showLoader && <Preloader onDone={() => setShowLoader(false)} />}
     </div>
+    </HoverCursorProvider>
   );
 }

@@ -981,6 +981,14 @@ img {
   -webkit-backdrop-filter: blur(32px);
   z-index: 1;
 }
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: inherit;
+  pointer-events: none;
+}
 .card--1 .glass {
   flex: 0.5 0 0;
 }
@@ -1039,6 +1047,7 @@ img {
   gap: 12px;
 }
 .tag {
+  position: relative;
   padding: 8px 12px;
   border-radius: 100px;
   background: rgba(255, 255, 255, 0.05);
@@ -1048,6 +1057,14 @@ img {
   line-height: 19.2px;
   color: rgba(255, 255, 255, 0.75);
   white-space: nowrap;
+}
+.tag::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: inherit;
+  pointer-events: none;
 }
 .card--1 .tag {
   color: rgba(255, 255, 255, 0.9);
@@ -2655,6 +2672,71 @@ img {
 }
 
 /* ── mobile (< 1200px): declared rules of the reference's phone layout ─── */
+
+/* ── custom hover cursors ─────────────────────────────────────────────── */
+[data-hover-cursor],
+[data-hover-cursor] * {
+  cursor: none !important;
+}
+.hover-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 13;
+  pointer-events: none;
+}
+.hover-cursor__glass {
+  position: absolute;
+  left: -39px;
+  top: -39px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 78px;
+  height: 78px;
+  border-radius: 100px;
+  backdrop-filter: blur(35px);
+  -webkit-backdrop-filter: blur(35px);
+}
+.hover-cursor__rim,
+.hover-cursor__fill {
+  position: absolute;
+  border-radius: 100px;
+}
+.hover-cursor__rim {
+  inset: 0;
+  background: linear-gradient(138deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.06) 53.1532%, rgba(255, 255, 255, 0.2) 100%);
+}
+.hover-cursor__fill {
+  inset: 1px;
+  background: rgba(255, 255, 255, 0.3);
+}
+.hover-cursor__glass svg {
+  position: relative;
+}
+.hover-cursor__stack {
+  position: absolute;
+  left: -188px;
+  top: -80px;
+  width: 376px;
+  height: 160px;
+}
+.hover-cursor__thumb {
+  position: absolute;
+  width: 151px;
+  height: 151px;
+  padding: 4px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 10px 16px 6px;
+}
+.hover-cursor__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  object-fit: cover;
+}
 
 @media (max-width: 1199.98px) {
   .hero__figure {

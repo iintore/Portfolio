@@ -23,6 +23,7 @@ export const CYCLE_SPRING = spring(0.8, 0);
 export const COUNTER_SPRING = spring(2, 0);
 export const SIDE_CLOUD_SPRING = { stiffness: 150, damping: 40, mass: 1 };
 export const TRACK_SPRING = { stiffness: 120, damping: 30, mass: 0.4 };
+export const CARD_STACK_SPRING = { stiffness: 400, damping: 80, mass: 1, restDelta: 0.001 }; // project cards scale / lift
 
 // case-study page (checkout module)
 export const CS_HERO_RISE: Transition = { type: "spring", stiffness: 139, damping: 30, mass: 1, delay: 0.1 }; // hero block, from y 180

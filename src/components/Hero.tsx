@@ -8,6 +8,11 @@ import { CHAR_STAGGER, CLOUD_LOOP, FLOAT_LOOP, HERO_LETTER, spring } from "../li
 export const cloudDriftA = { animate: { x: [0, 110], y: [0, -27] }, transition: CLOUD_LOOP };
 export const cloudDriftB = { animate: { x: [0, -48], y: [0, -47] }, transition: CLOUD_LOOP };
 
+// On the reference, on-mount text effects start once the page has hydrated:
+// measured 1.07s after first paint (the hero figure's 1s-delayed rise starts at
+// about the same moment). Both title words keep their own delays on top of it.
+const TEXT_START = 1.07;
+
 function Letters({ text, delay, duration }: { text: string; delay: number; duration: number }) {
   return (
     <>
@@ -61,11 +66,11 @@ export function Hero() {
             </p>
             <div className="hero__title">
               <h1 className="hero__line1" aria-label={hero.line1}>
-                <Letters text={hero.line1} delay={0} duration={1} />
+                <Letters text={hero.line1} delay={TEXT_START} duration={1} />
               </h1>
               <motion.div className="hero__line2-wrap" animate={{ y: [0, -16] }} transition={FLOAT_LOOP}>
                 <h1 className="hero__line2" aria-label={hero.line2}>
-                  <Letters text={hero.line2} delay={1.5} duration={0.4} />
+                  <Letters text={hero.line2} delay={TEXT_START + 1.5} duration={0.4} />
                 </h1>
               </motion.div>
             </div>

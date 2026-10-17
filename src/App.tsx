@@ -11,6 +11,7 @@ import { Closing } from "./components/Closing";
 import { Resume } from "./pages/Resume";
 import { CaseStudy } from "./pages/CaseStudy";
 import { HoverCursorProvider } from "./components/HoverCursor";
+import { Analytics } from "@vercel/analytics/react";
 import { applyPageMeta } from "./lib/pageMeta";
 
 export default function App() {
@@ -55,6 +56,8 @@ export default function App() {
       {page}
       <Nav back={path !== "/"} openAtTop={path !== "/resume"} wideFrom={path === "/case-study" ? 810 : 1200} />
       {showLoader && <Preloader onDone={() => setShowLoader(false)} />}
+      {/* Vercel Web Analytics, as on the live site (records page views on Vercel deploys) */}
+      <Analytics />
     </div>
     </HoverCursorProvider>
   );

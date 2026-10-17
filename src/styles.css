@@ -370,6 +370,7 @@ img {
   z-index: 9;
 }
 .nav {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 64px;
@@ -384,6 +385,15 @@ img {
     rgba(0, 0, 0, 0.03) 0px 10px 34px -4.25px;
   overflow: hidden;
   white-space: nowrap;
+}
+/* 1px white stroke drawn over the pill (Framer border overlay) */
+.nav::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid #fff;
+  border-radius: inherit;
+  pointer-events: none;
 }
 .nav__brand {
   display: flex;
@@ -419,20 +429,30 @@ img {
   gap: 16px;
 }
 .nav__link {
+  position: relative;
   font-weight: 600;
   font-size: 16px;
   line-height: 16px;
   color: rgb(36, 36, 36);
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  text-underline-offset: 3px;
-  transition:
-    text-decoration-color 0.4s cubic-bezier(0.44, 0, 0.56, 1),
-    color 0.4s cubic-bezier(0.44, 0, 0.56, 1);
+  transition: color 0.25s ease-out;
 }
 .nav__link:hover {
   color: #000;
-  text-decoration-color: currentColor;
+}
+.nav__underline {
+  position: absolute;
+  left: 0;
+  top: 16px;
+  height: 8px;
+  overflow: visible;
+  pointer-events: none;
+}
+.nav__underline path {
+  fill: none;
+  stroke: rgb(2, 129, 224);
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 .nav__dots-btn {
   display: block;
@@ -2149,7 +2169,7 @@ img {
   background: #fff;
   box-shadow:
     rgba(126, 130, 133, 0.05) 0px 0px 0px 8px,
-    rgba(0, 0, 0, 0.04) 0px 8px 24px -6px;
+    rgba(0, 0, 0, 0.02) 0px 4px 16px 15px;
   position: relative;
   z-index: 2;
 }
@@ -2163,6 +2183,7 @@ img {
   height: 14px;
   border-radius: 14px;
   background: rgb(222, 27, 27);
+  box-shadow: rgba(237, 49, 49, 0.5) 0px 0px 20px 0px;
   flex: none;
 }
 .problem__t {
@@ -2233,7 +2254,7 @@ img {
   background: #fff;
   box-shadow:
     rgba(126, 130, 133, 0.05) 0px 0px 0px 8px,
-    rgba(0, 0, 0, 0.04) 0px 8px 24px -6px;
+    rgba(0, 0, 0, 0.02) 0px 4px 16px 15px;
   flex: none;
 }
 .voice__q {
@@ -2313,27 +2334,59 @@ img {
   position: relative;
   height: 100%;
   padding: 32px;
+  overflow: hidden;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 4px 0px;
 }
+/* ruled lines: eight 3px rules spread over 146px from the padding corner */
 .note__lines {
   position: absolute;
-  inset: 32px 32px 40px;
+  top: 32px;
+  left: 32px;
+  right: 32px;
+  height: 146px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 .note__lines span {
-  height: 18px;
+  height: 3px;
   background: rgba(0, 0, 0, 0.05);
+}
+/* paper creases: a 571 × 50 band (30px shade over a 20px highlight), centred
+   on the note at the given height and tilted per note; clipped by the paper */
+.note__bend {
+  position: absolute;
+  left: 50%;
+  width: 571px;
+  height: 50px;
+  margin: -25px 0 0 -285.5px;
+  pointer-events: none;
+}
+.note__bend::before,
+.note__bend::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+.note__bend::before {
+  top: 0;
+  height: 30px;
+  box-shadow: inset 0 -20px 8px rgba(0, 0, 0, 0.05);
+}
+.note__bend::after {
+  top: 30px;
+  height: 20px;
+  box-shadow: inset 0 20px 8px rgba(255, 255, 255, 0.11);
 }
 .note__text {
   position: relative;
-  font-family: var(--script);
+  font-family: "Mynerve", cursive;
   font-variation-settings: normal;
-  font-weight: 500;
-  font-size: 30px;
-  line-height: 36px;
-  color: #1e1e1e;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 33.6px;
+  color: #000;
   text-align: left;
 }
 .goal-cards {
@@ -2519,7 +2572,6 @@ img {
 }
 .feature__note {
   padding: 8px 0 8px 24px;
-  border-left: 2px solid rgba(0, 0, 0, 0.08);
   font-weight: 400;
   font-size: 16px;
   line-height: 25.6px;
@@ -2583,7 +2635,7 @@ img {
   padding: 12px 28px 28px;
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.75);
-  box-shadow: rgba(157, 184, 207, 0.25) 0px 8px 24px -4px;
+  box-shadow: rgba(157, 184, 204, 0.5) -72px 1px 72px 0px;
 }
 .outcome__visual {
   display: flex;
@@ -2676,6 +2728,84 @@ img {
 /* media pipeline <picture>: lays out as if the <img> were placed directly */
 .media {
   display: contents;
+}
+
+/* only cards 2 and 3 cast the upward shadow (onto the card beneath); the
+   first card sits on the section background without one */
+.card--1 {
+  box-shadow: none;
+}
+
+/* ── hairline strokes ───────────────────────────────────────────────────────
+   Framer draws borders as overlays inside the box (they take no layout
+   space); each value below is the reference's computed stroke. */
+.glass__title,
+.role__pill,
+.cs-tag,
+.bento,
+.bento__inner,
+.cs-stat,
+.problem__dot,
+.decision__content,
+.feature__note,
+.outcome {
+  position: relative;
+}
+.glass__title::after,
+.role__pill::after,
+.slideshow::after,
+.cs-tag::after,
+.bento::after,
+.bento__inner::after,
+.cs-stat:not(:last-child)::after,
+.problem__dot::after,
+.decision__content::after,
+.feature__note::after,
+.back-pill::after,
+.outcome::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 0 solid transparent;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.glass__title::after {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+.role__pill::after {
+  border: 1px solid rgba(2, 129, 224, 0.5);
+}
+.role--current .role__pill::after {
+  border-color: rgba(64, 194, 31, 0.5);
+}
+.slideshow::after {
+  border: 2px solid #fff;
+}
+.cs-tag::after {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+.bento::after {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.bento__inner::after {
+  border: 1px solid rgb(237, 237, 237);
+}
+.cs-stat:not(:last-child)::after {
+  border-right: 1px solid rgba(34, 34, 34, 0.08);
+}
+.problem__dot::after {
+  border: 2px solid rgb(255, 117, 117);
+}
+.decision__content::after {
+  border: 1px solid var(--edge, transparent);
+}
+.feature__note::after {
+  border-left: 1px solid rgba(34, 34, 34, 0.2);
+}
+.back-pill::after,
+.outcome::after {
+  border: 1px solid #fff;
 }
 
 /* ── custom hover cursors ─────────────────────────────────────────────── */

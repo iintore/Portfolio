@@ -192,6 +192,12 @@ function VoiceTicker() {
 const NOTE_COLORS = ["rgb(255, 248, 232)", "rgb(232, 245, 255)", "rgb(250, 204, 197)"];
 const NOTE_TILT = [-2, 1.5, 2.5];
 const NOTE_DELAY = [0, 0.2, 0.4];
+// two paper creases per note: centre height (px) and tilt (deg), as on the reference
+const NOTE_BENDS = [
+  [[69, -11], [149, 5]],
+  [[69, -5], [149, 4]],
+  [[69, 14], [149, -7]],
+];
 
 function Notes() {
   return (
@@ -216,6 +222,9 @@ function Notes() {
               ))}
             </div>
             <p className="note__text">{n}</p>
+            {NOTE_BENDS[i].map(([top, tilt], k) => (
+              <span key={k} className="note__bend" style={{ top, rotate: `${tilt}deg` }} aria-hidden="true" />
+            ))}
           </div>
         </motion.div>
       ))}
@@ -227,6 +236,7 @@ function Notes() {
 // in from scale 1.1 (0.4s tween, staggered .25s). Inside, the card body settles
 // from opacity .8 and its number rises 10px when half visible.
 const DECISION_TINT = ["rgb(255, 252, 245)", "rgb(245, 251, 255)", "rgb(255, 240, 237)", "rgb(255, 247, 242)"];
+const DECISION_EDGE = ["rgb(247, 240, 220)", "rgb(213, 227, 237)", "rgb(250, 220, 215)", "rgb(250, 228, 214)"];
 
 function Decisions() {
   const row = useRef<HTMLDivElement>(null);
@@ -252,7 +262,7 @@ function Decisions() {
             >
               {String(i + 1).padStart(2, "0")}
             </motion.p>
-            <div className="decision__content" style={{ background: DECISION_TINT[i] }}>
+            <div className="decision__content" style={{ background: DECISION_TINT[i], ["--edge" as string]: DECISION_EDGE[i] }}>
               <h3 className="decision__t">{d.t}</h3>
               <p className="decision__b">{d.b}</p>
             </div>

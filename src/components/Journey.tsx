@@ -127,17 +127,13 @@ export function Journey() {
                   {role.pill === "top" ? (
                     <>
                       <Marker role={role} />
-                      <div className="role__branch">
-                        <div className="role__stem" />
-                        <RoleCard role={role} index={i} />
-                      </div>
+                      <div className="role__stem" />
+                      <RoleCard role={role} index={i} />
                     </>
                   ) : (
                     <>
-                      <div className="role__branch">
-                        <RoleCard role={role} index={i} />
-                        <div className="role__stem" />
-                      </div>
+                      <RoleCard role={role} index={i} />
+                      <div className="role__stem" />
                       <Marker role={role} />
                     </>
                   )}

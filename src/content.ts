@@ -105,41 +105,41 @@ export const journey = {
   label: "EXPERIENCE",
   title: "the journey so far",
   body: "One line summarising your career so far — the industries, the roles, and the time span.",
-  // ordered left → right on the timeline; `pill` places the date above or below the line.
-  // Keep each card to two or three short bullets: on desktop the cards hang above and
-  // below the line, so the tallest top-pill and bottom-pill cards stack in one 100vh panel.
+  // ordered left → right on the timeline; `pill` places the date above or below the line
   roles: [
     {
       pill: "top" as const, current: true, dates: ["Jan '25 -", "Present"],
       title: "Role title", company: "Company A", location: "Your City, ST", logo: "/placeholders/exp-1.png",
       points: [
-        "Your main responsibility in this role.",
-        "A project you led and what it achieved.",
-        "A process you improved for the team.",
+        "First responsibility or achievement in this role, written out in full so it wraps across four lines at this card width.",
+        "Second point: a project you led, who it was for, and the measurable result it produced once it shipped to people.",
+        "Third point: a team, system or process you improved while you were there and how that changed the work.",
       ],
     },
     {
       pill: "bottom" as const, dates: ["Jun '24 - Dec '24"],
       title: "Previous role title", company: "Company A", location: "Your City, ST", logo: "/placeholders/exp-1.png",
       points: [
-        "What you owned in this role.",
-        "A feature you took from idea to launch.",
+        "First responsibility or achievement in this role, written out so it wraps across about four lines here.",
+        "Second point describing a project you owned, from early concepts through to validation.",
+        "Third point about who you collaborated with and the impact the work had on daily use.",
       ],
     },
     {
       pill: "top" as const, dates: ["Jan '24 - May '24"],
       title: "Internship title", company: "Company B", location: "Your City, ST", logo: "/placeholders/exp-2.png",
       points: [
-        "What you designed as an intern.",
-        "A launch you supported.",
+        "First responsibility or achievement in this internship, written so it runs across four lines.",
+        "Second point describing a launch you supported and what it made possible.",
       ],
     },
     {
       pill: "bottom" as const, dates: ["May '23 - Aug '23"],
       title: "Internship title", company: "Company C", location: "Other City, ST", logo: "/placeholders/exp-3.png",
       points: [
-        "The products and users you designed for.",
-        "Who you partnered with, and the result.",
+        "First responsibility or achievement in this role, written out so it wraps across about four lines here.",
+        "Second point describing the products or platforms you designed for and their users.",
+        "Third point about who you partnered with and what improved across core workflows.",
       ],
     },
   ],

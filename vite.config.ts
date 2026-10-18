@@ -27,7 +27,7 @@ function preloadHeroImage(): Plugin {
       const hero = manifest["hero-figure"];
       if (!hero) return html;
       const srcset = hero.sources.avif.map(([url, w]: [string, number]) => `${url} ${w}w`).join(", ");
-      const tag = `<link rel="preload" as="image" type="image/avif" fetchpriority="high" imagesrcset="${srcset}" imagesizes="(min-width: 1200px) min(75vw, 1140px), 197vw" />`;
+      const tag = `<link rel="preload" as="image" type="image/avif" fetchpriority="high" imagesrcset="${srcset}" imagesizes="(min-width: 1200px) min(72vw, 1094px), 197vw" />`;
       return html.replace("</head>", `    ${tag}\n  </head>`);
     },
   };

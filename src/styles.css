@@ -552,6 +552,18 @@ img {
   object-fit: contain;
   object-position: right bottom;
 }
+/* desktop: the figure a touch smaller, and it and the sky's fade to white sit
+   a little lower (the sky's last 20px, already near-white, run under the
+   banner edge) */
+@media (min-width: 1200px) {
+  .hero__sky {
+    height: calc(100% + 20px);
+  }
+  .hero__figure {
+    bottom: 3%;
+    width: 72%;
+  }
+}
 .cloud {
   position: absolute;
   z-index: 0;

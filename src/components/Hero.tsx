@@ -45,7 +45,7 @@ export function Hero() {
           transition={spring(1.5, 0.2, 1)}
         >
           {/* the LCP image: responsive AVIF/WebP, fetched with high priority */}
-          <Media name={hero.figure} sizes="(min-width: 1200px) min(75vw, 1140px), 197vw" alt="Tony Lewis" priority />
+          <Media name={hero.figure} sizes="(min-width: 1200px) min(72vw, 1094px), 197vw" alt="Tony Lewis" priority />
         </motion.div>
         <motion.div className="cloud cloud--fade-right cloud--1" {...cloudDriftA}>
           <img src="/decor/cloud-a.webp" alt="" />

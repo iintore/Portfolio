@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { motion, useAnimationFrame, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useAnimationFrame, useInView, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
 import { contact, site, testimonials } from "../content";
 import { Behance, LinkedIn, Paperclip } from "./Icons";
 import { SectionHead, Separator } from "./Section";
@@ -177,6 +177,27 @@ function SocialButton({ s, index }: { s: (typeof site.socials)[number]; index: n
   );
 }
 
+// The clip in the tilted card: the poster shows until the card comes near the
+// viewport, then the video loads and loops (it sits at the bottom of every page,
+// so it shouldn't cost anything on first load).
+function SlideshowVideo() {
+  const ref = useRef<HTMLVideoElement>(null);
+  const near = useInView(ref, { once: true, margin: "600px 0px" });
+  return (
+    <video
+      ref={ref}
+      src={near ? contact.video : undefined}
+      poster={contact.poster}
+      preload="none"
+      autoPlay
+      muted
+      loop
+      playsInline
+      aria-hidden="true"
+    />
+  );
+}
+
 // The "lets … together" contact block with the giant wordmark; shared by every page.
 export function Contact() {
   return (
@@ -198,7 +219,7 @@ export function Contact() {
             transition={{ type: "tween", duration: 1, ease: EASE_STD }}
           >
             <div className="slideshow__media">
-              {contact.video ? <video src={contact.video} autoPlay muted loop playsInline /> : <div className="slideshow__placeholder" />}
+              {contact.video ? <SlideshowVideo /> : <div className="slideshow__placeholder" />}
             </div>
           </motion.div>
         </div>

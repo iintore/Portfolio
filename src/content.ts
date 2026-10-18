@@ -171,8 +171,9 @@ export const contact = {
   line2: "incredible work together.",
   emailLabel: "Email",
   socialLabel: "Social",
-  // set to a video URL to play a clip in the tilted card; empty shows a gradient
-  video: "",
+  // clip in the tilted card (muted, looping) and its first frame; empty video shows a gradient
+  video: "/media/deal-done-645868aa5c.mp4",
+  poster: "/media/deal-done-645868aa5c-poster.webp",
   bigWord: "TONY",
 };
 

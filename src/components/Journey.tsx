@@ -5,7 +5,6 @@ import { Pin } from "./Icons";
 import { Separator, SectionHead } from "./Section";
 import { APPEAR_SPRING, TRACK_SPRING } from "../lib/motion";
 import { useHoverCursor } from "./HoverCursor";
-import { useIsDesktop } from "../lib/useIsDesktop";
 
 type Role = (typeof journey.roles)[number];
 
@@ -86,10 +85,7 @@ function RoleCard({ role, index }: { role: Role; index: number }) {
 // hold = round(0.45 × viewport height), section height = viewport + H + hold.
 // Over the section's scroll progress the track maps [0, H/(H+hold), 1] →
 // [0, −H, −H], smoothed by a spring (stiffness 120, damping 30, mass 0.4).
-// Phones (< 810px) get a plain vertical timeline instead: no pinning, no track
-// movement (see the phone block in styles.css).
 export function Journey() {
-  const pinned = useIsDesktop(810);
   const scroller = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const [dims, setDims] = useState({ H: 0, hold: 0, vh: 900 });
@@ -118,13 +114,13 @@ export function Journey() {
   return (
     <section className="journey">
       <Separator />
-      <div className="journey__scroller" ref={scroller} style={pinned ? { height: dims.vh + dims.H + dims.hold } : undefined}>
+      <div className="journey__scroller" ref={scroller} style={{ height: dims.vh + dims.H + dims.hold }}>
         <div className="journey__sticky">
           <div className="journey__head">
             <SectionHead label={journey.label} title={journey.title} body={journey.body} />
           </div>
           <div className="journey__viewport">
-            <motion.div className="journey__track" ref={track} style={pinned ? { x } : undefined}>
+            <motion.div className="journey__track" ref={track} style={{ x }}>
               <div className="journey__line" />
               {journey.roles.map((role, i) => (
                 <div key={i} className={`role role--${role.pill}${"current" in role && role.current ? " role--current" : ""}`}>

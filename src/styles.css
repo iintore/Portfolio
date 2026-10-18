@@ -3268,55 +3268,38 @@ html.route-cs .contact__big {
 /* ── phones (< 810px), home page + the shared closing ─────────────────────
    The reference's own phone layout overflows here (its footer heading falls
    to one letter per line, the testimonials and the timeline run off-screen),
-   so phones get a fitted, stacked layout instead. */
+   so phones get a fitted layout instead. */
 @media (max-width: 809.98px) {
-  /* experience: a vertical timeline (Journey.tsx drops the pinned sideways
-     scroll below 810px); every role reads date pill → card, dot on the line */
-  .journey__sticky {
-    position: static;
-    height: auto;
+  /* experience: the same pinned sideways scroll with narrower cards that all
+     hang below the line (date pill, dot on the line, stem, card), so every
+     dot lines up and the panel fits a phone's height */
+  .journey {
+    --role-w: min(280px, calc(100vw - 80px));
   }
   .journey__viewport {
-    margin-top: 40px;
+    margin-top: 32px;
   }
   .journey__track {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 40px;
-    width: 100%;
-    max-width: 560px;
-    margin: 0 auto;
-    padding: 0 0 0 32px;
+    align-items: flex-start;
+    gap: 32px;
+    padding: 0 calc(50cqw - var(--role-w) / 2);
   }
   .journey__line {
-    left: 7px;
-    right: auto;
-    top: 16px;
-    bottom: 0;
-    width: 2px;
-    height: auto;
-    transform: none;
-    background: linear-gradient(rgb(216, 227, 235) 85%, rgba(216, 227, 235, 0));
+    left: calc(50cqw - var(--role-w) / 2);
+    right: calc(50cqw - var(--role-w) / 2);
+    top: 52px; /* pill 32 + gap 12 + half the dot */
   }
   .role {
-    width: 100%;
-    align-items: stretch;
-    gap: 16px;
+    width: var(--role-w);
+    justify-content: flex-start;
   }
-  .role__stem {
-    display: none;
+  .role--bottom .role__marker {
+    order: -2;
+    flex-direction: column-reverse;
   }
-  .role__marker {
+  .role--bottom .role__stem {
     order: -1;
-    flex-direction: row;
-    align-items: center;
-    gap: 16px;
-    width: auto;
-    margin-left: -32px;
-  }
-  .role__dot {
-    order: -1;
-    flex: none;
+    height: 24px;
   }
   .role__pill {
     padding: 6px 12px;

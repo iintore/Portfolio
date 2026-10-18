@@ -122,6 +122,9 @@ function Cycle() {
     const measure = () => setWidths(Array.from(el.children).map((c) => (c as HTMLElement).offsetWidth));
     measure();
     document.fonts?.ready.then(measure);
+    // the words scale with the viewport on phones
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
   }, [words]);
   useEffect(() => {
     const id = setInterval(() => setCur((c) => (c + 1) % words.length), 1500);

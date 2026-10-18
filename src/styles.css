@@ -575,13 +575,19 @@ img {
    a little lower (the sky's last 20px run under the banner edge; its fade
    still ends exactly at that edge) */
 @media (min-width: 1200px) {
+  .hero__stage {
+    container-type: size;
+  }
   .hero__sky {
     height: calc(100% + 20px);
     --sky-end: calc(100% - 20px);
   }
   .hero__figure {
     bottom: 3%;
-    width: 72%;
+    /* 72% of the width, but never taller than 85% of the stage: on wide,
+       short screens (2560×1080, 3440×1440…) width alone would push the head
+       off the top. Common desktop shapes stay under the cap. */
+    width: min(72%, 85cqh * 1.77653);
   }
 }
 .cloud {

@@ -517,6 +517,25 @@ img {
   width: 100%;
   height: 100%;
   object-fit: fill;
+  /* the sky melts into the page colour over its last 160px: an S-curve
+     (smootherstep) that arrives with zero slope at the stage edge, so no
+     line shows where the hero meets the banner. --sky-end is where the
+     stage edge falls on the image (lower on desktop, see below) */
+  --sky-end: 100%;
+  --sky-fade: linear-gradient(
+    to bottom,
+    #000 calc(var(--sky-end) - 160px),
+    rgba(0, 0, 0, 0.984) calc(var(--sky-end) - 140px),
+    rgba(0, 0, 0, 0.896) calc(var(--sky-end) - 120px),
+    rgba(0, 0, 0, 0.725) calc(var(--sky-end) - 100px),
+    rgba(0, 0, 0, 0.5) calc(var(--sky-end) - 80px),
+    rgba(0, 0, 0, 0.275) calc(var(--sky-end) - 60px),
+    rgba(0, 0, 0, 0.104) calc(var(--sky-end) - 40px),
+    rgba(0, 0, 0, 0.016) calc(var(--sky-end) - 20px),
+    transparent var(--sky-end)
+  );
+  -webkit-mask-image: var(--sky-fade);
+  mask-image: var(--sky-fade);
 }
 .hero__figure {
   position: absolute;
@@ -553,11 +572,12 @@ img {
   object-position: right bottom;
 }
 /* desktop: the figure a touch smaller, and it and the sky's fade to white sit
-   a little lower (the sky's last 20px, already near-white, run under the
-   banner edge) */
+   a little lower (the sky's last 20px run under the banner edge; its fade
+   still ends exactly at that edge) */
 @media (min-width: 1200px) {
   .hero__sky {
     height: calc(100% + 20px);
+    --sky-end: calc(100% - 20px);
   }
   .hero__figure {
     bottom: 3%;
